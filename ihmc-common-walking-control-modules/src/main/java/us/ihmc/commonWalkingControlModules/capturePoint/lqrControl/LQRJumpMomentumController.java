@@ -136,7 +136,7 @@ public class LQRJumpMomentumController
       this.contactStateProviders.clear();
 
       Trajectory3D lastTrajectory = vrpTrajectory.get(vrpTrajectory.size() - 1);
-      lastTrajectory.compute(Math.min(sufficientlyLongTime, lastTrajectory.getFinalTime()));
+      lastTrajectory.compute(Math.min(sufficientlyLongTime, lastTrajectory.getEndTime()));
       finalVRPPosition.set(lastTrajectory.getPosition());
       finalVRPPosition.get(finalVRPState);
 

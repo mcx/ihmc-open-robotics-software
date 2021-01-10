@@ -126,7 +126,7 @@ public class LQRMomentumController
       relativeVRPTrajectories.clear();
 
       Trajectory3D lastTrajectory = vrpTrajectory.get(vrpTrajectory.size() - 1);
-      lastTrajectory.compute(Math.min(sufficientlyLarge, lastTrajectory.getFinalTime()));
+      lastTrajectory.compute(Math.min(sufficientlyLarge, lastTrajectory.getEndTime()));
       finalVRPPosition.set(lastTrajectory.getPosition());
       finalVRPPosition.get(finalVRPState);
 

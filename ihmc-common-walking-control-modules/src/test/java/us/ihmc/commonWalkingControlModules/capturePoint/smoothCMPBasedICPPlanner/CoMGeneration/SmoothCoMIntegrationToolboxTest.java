@@ -567,14 +567,14 @@ public class SmoothCoMIntegrationToolboxTest
    public static void calculateCoMPositionByHand3DLinear(double omega0, double time, FrameTrajectory3D linear3D, FramePoint3D icpPositionDesiredFinal,
                                                          FramePoint3D comPositionDesiredInitial, FramePoint3D comPositionDesiredCurrent)
    {
-      linear3D.compute(linear3D.getInitialTime());
+      linear3D.compute(linear3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(linear3D.getFramePosition());
 
-      linear3D.compute(linear3D.getFinalTime());
+      linear3D.compute(linear3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(linear3D.getFramePosition());
 
-      double timeInitial = linear3D.getInitialTime();
-      double timeFinal = linear3D.getFinalTime();
+      double timeInitial = linear3D.getStartTime();
+      double timeFinal = linear3D.getEndTime();
 
       double at = 1 - Math.exp(omega0 * (timeInitial - time));
       double bt = time - timeInitial * Math.exp(omega0 * (timeInitial - time)) - 1.0 / omega0 + 1.0 / omega0 * Math.exp(omega0 * (timeInitial - time));
@@ -603,14 +603,14 @@ public class SmoothCoMIntegrationToolboxTest
    public static void calculateCoMVelocityByHand3DLinear(double omega0, double time, FrameTrajectory3D linear3D, FramePoint3D icpPositionDesiredFinal,
                                                          FramePoint3D comPositionDesiredFinal, FrameVector3D comVelocityDesiredCurrent)
    {
-      linear3D.compute(linear3D.getInitialTime());
+      linear3D.compute(linear3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(linear3D.getFramePosition());
 
-      linear3D.compute(linear3D.getFinalTime());
+      linear3D.compute(linear3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(linear3D.getFramePosition());
 
-      double timeInitial = linear3D.getInitialTime();
-      double timeFinal = linear3D.getFinalTime();
+      double timeInitial = linear3D.getStartTime();
+      double timeFinal = linear3D.getEndTime();
 
       double dat = omega0 * Math.exp(omega0 * (timeInitial - time));
       double dbt = 1 + omega0 * timeInitial * Math.exp(omega0 * (timeInitial - time)) - Math.exp(omega0 * (timeInitial - time));

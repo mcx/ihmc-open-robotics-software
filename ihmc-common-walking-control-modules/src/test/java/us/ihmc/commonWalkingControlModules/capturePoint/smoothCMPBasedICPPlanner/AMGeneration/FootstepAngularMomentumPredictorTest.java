@@ -390,8 +390,8 @@ public class FootstepAngularMomentumPredictorTest
       AngularMomentumTrajectory transferAngularMomentumTrajectory = transferAngularMomentumTrajectories.get(numberOfFootstepsToConsider.getIntegerValue());
       assertTrue("Transfer trajectory " + numberOfFootstepsToConsider.getIntegerValue() + " has " + transferAngularMomentumTrajectory.getNumberOfSegments()
             + " segments, needed 1.\n" + transferAngularMomentumTrajectory.toString(), transferAngularMomentumTrajectory.getNumberOfSegments() == 1);
-      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getInitialTime() == 0.0);
-      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getFinalTime() == testParameters.getTransferSplitFraction() * transferTime);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getStartTime() == 0.0);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getEndTime() == testParameters.getTransferSplitFraction() * transferTime);
       comListCounter = setCoMTrajectory(0.0, transferTime * testParameters.getTransferSplitFraction(), comInitialPositionList, comFinalPositionList,
                                         comInitialVelocityList, comFinalVelocityList, comInitialAccelerationList, comFinalAccelerationList, comListCounter);
       computeDoubleSupportFootTrajectories(copWaypointList, numberOfFootstepsToConsider.getIntegerValue());
@@ -413,9 +413,9 @@ public class FootstepAngularMomentumPredictorTest
       assertTrue("Swing trajectory " + stepIndex + " has " + swingAngularMomentumTrajectory.getNumberOfSegments() + " segments, needed 3.\n"
             + swingAngularMomentumTrajectory.toString(), swingAngularMomentumTrajectory.getNumberOfSegments() == 3);
 
-      assertTrue(swingAngularMomentumTrajectory.getSegment(0).getInitialTime() == 0.0);
-      assertTrue(swingAngularMomentumTrajectory.getSegment(0).getFinalTime() == swingTime * testParameters.getSwingDurationShiftFraction()
-            * testParameters.getSwingSplitFraction());
+      assertTrue(swingAngularMomentumTrajectory.getSegment(0).getStartTime() == 0.0);
+      assertTrue(swingAngularMomentumTrajectory.getSegment(0).getEndTime() == swingTime * testParameters.getSwingDurationShiftFraction()
+                                                                              * testParameters.getSwingSplitFraction());
       comListCounter = setCoMTrajectory(0.0, swingTime * testParameters.getSwingSplitFraction() * testParameters.getSwingDurationShiftFraction(),
                                         comInitialPositionList, comFinalPositionList, comInitialVelocityList, comFinalVelocityList,
                                         comInitialAccelerationList, comFinalAccelerationList, comListCounter);
@@ -424,9 +424,9 @@ public class FootstepAngularMomentumPredictorTest
       assertTrue(angularMomentumTrajectory.toString() + "\n\n" + swingAngularMomentumTrajectory.getSegment(0).toString(),
                  TrajectoryMathTools.epsilonEquals(angularMomentumTrajectory, swingAngularMomentumTrajectory.getSegment(0), Epsilons.ONE_TEN_THOUSANDTH));
 
-      assertTrue(swingAngularMomentumTrajectory.getSegment(1).getInitialTime() == swingTime * testParameters.getSwingDurationShiftFraction()
-            * testParameters.getSwingSplitFraction());
-      assertTrue(swingAngularMomentumTrajectory.getSegment(1).getFinalTime() == swingTime * testParameters.getSwingDurationShiftFraction());
+      assertTrue(swingAngularMomentumTrajectory.getSegment(1).getStartTime() == swingTime * testParameters.getSwingDurationShiftFraction()
+                                                                                * testParameters.getSwingSplitFraction());
+      assertTrue(swingAngularMomentumTrajectory.getSegment(1).getEndTime() == swingTime * testParameters.getSwingDurationShiftFraction());
       comListCounter = setCoMTrajectory(swingTime * testParameters.getSwingSplitFraction() * testParameters.getSwingDurationShiftFraction(),
                                         swingTime * testParameters.getSwingDurationShiftFraction(), comInitialPositionList, comFinalPositionList,
                                         comInitialVelocityList, comFinalVelocityList, comInitialAccelerationList, comFinalAccelerationList, comListCounter);
@@ -435,8 +435,8 @@ public class FootstepAngularMomentumPredictorTest
       assertTrue(angularMomentumTrajectory.toString() + "\n\n" + swingAngularMomentumTrajectory.getSegment(1).toString(),
                  TrajectoryMathTools.epsilonEquals(angularMomentumTrajectory, swingAngularMomentumTrajectory.getSegment(1), Epsilons.ONE_TEN_THOUSANDTH));
 
-      assertTrue(swingAngularMomentumTrajectory.getSegment(2).getInitialTime() == swingTime * testParameters.getSwingDurationShiftFraction());
-      assertTrue(swingAngularMomentumTrajectory.getSegment(2).getFinalTime() == swingTime);
+      assertTrue(swingAngularMomentumTrajectory.getSegment(2).getStartTime() == swingTime * testParameters.getSwingDurationShiftFraction());
+      assertTrue(swingAngularMomentumTrajectory.getSegment(2).getEndTime() == swingTime);
       comListCounter = setCoMTrajectory(swingTime * testParameters.getSwingDurationShiftFraction(), swingTime, comInitialPositionList, comFinalPositionList,
                                         comInitialVelocityList, comFinalVelocityList, comInitialAccelerationList, comFinalAccelerationList, comListCounter);
       computeSingleSupportFootTrajectories(copWaypointList, stepIndex);
@@ -459,8 +459,8 @@ public class FootstepAngularMomentumPredictorTest
       assertTrue("Transfer trajectory " + stepIndex + " has " + transferAngularMomentumTrajectory.getNumberOfSegments() + " segments, needed 2.\n"
             + transferAngularMomentumTrajectory.toString(), transferAngularMomentumTrajectory.getNumberOfSegments() == 2);
 
-      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getInitialTime() == 0.0);
-      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getFinalTime() == testParameters.getTransferSplitFraction() * transferTime);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getStartTime() == 0.0);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(0).getEndTime() == testParameters.getTransferSplitFraction() * transferTime);
       comListCounter = setCoMTrajectory(0.0, transferTime * testParameters.getTransferSplitFraction(), comInitialPositionList, comFinalPositionList,
                                         comInitialVelocityList, comFinalVelocityList, comInitialAccelerationList, comFinalAccelerationList, comListCounter);
       computeDoubleSupportFootTrajectories(copWaypointList, stepIndex);
@@ -468,8 +468,8 @@ public class FootstepAngularMomentumPredictorTest
       assertTrue(angularMomentumTrajectory.toString() + "\n\n" + transferAngularMomentumTrajectory.getSegment(0).toString(),
                  TrajectoryMathTools.epsilonEquals(angularMomentumTrajectory, transferAngularMomentumTrajectory.getSegment(0), Epsilons.ONE_TEN_THOUSANDTH));
 
-      assertTrue(transferAngularMomentumTrajectory.getSegment(1).getInitialTime() == testParameters.getTransferSplitFraction() * transferTime);
-      assertTrue(transferAngularMomentumTrajectory.getSegment(1).getFinalTime() == transferTime);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(1).getStartTime() == testParameters.getTransferSplitFraction() * transferTime);
+      assertTrue(transferAngularMomentumTrajectory.getSegment(1).getEndTime() == transferTime);
       comListCounter = setCoMTrajectory(transferTime * testParameters.getTransferSplitFraction(), transferTime, comInitialPositionList, comFinalPositionList,
                                         comInitialVelocityList, comFinalVelocityList, comInitialAccelerationList, comFinalAccelerationList, comListCounter);
       computeDoubleSupportFootTrajectories(copWaypointList, stepIndex);

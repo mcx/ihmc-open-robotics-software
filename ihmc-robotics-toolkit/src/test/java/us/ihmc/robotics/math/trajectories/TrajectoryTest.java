@@ -28,11 +28,11 @@ public class TrajectoryTest
       Trajectory traj = new Trajectory(2);
       assertEquals(0, traj.getNumberOfCoefficients());
       traj.setLinear(1, 2, 3, 5);
-      assertEquals(1, traj.getInitialTime(), SMALL_EPSILON);
-      assertEquals(2, traj.getFinalTime(), SMALL_EPSILON);
-      traj.compute(traj.getInitialTime());
+      assertEquals(1, traj.getStartTime(), SMALL_EPSILON);
+      assertEquals(2, traj.getEndTime(), SMALL_EPSILON);
+      traj.compute(traj.getStartTime());
       assertEquals(3.0, traj.getPosition(), SMALL_EPSILON);
-      traj.compute(traj.getFinalTime());
+      traj.compute(traj.getEndTime());
       assertEquals(5.0, traj.getPosition(), SMALL_EPSILON);
       assertEquals(2, traj.getCoefficient(1), SMALL_EPSILON);
       assertEquals(1, traj.getCoefficient(0), SMALL_EPSILON);

@@ -56,14 +56,14 @@ public class CMPTrajectory extends SegmentedFrameTrajectory3D
    public void getExitCMPLocation(FramePoint3D exitCMPLocationToPack)
    {
       FrameTrajectory3D segment = segments.getLast();
-      segment.compute(segment.getFinalTime());
+      segment.compute(segment.getEndTime());
       exitCMPLocationToPack.setIncludingFrame(segment.getFramePosition());
    }
 
    public void getEntryCMPLocation(FramePoint3D entryCMPLocationToPack)
    {
       FrameTrajectory3D segment = segments.getFirst();
-      segment.compute(segment.getInitialTime());
+      segment.compute(segment.getStartTime());
       entryCMPLocationToPack.setIncludingFrame(segment.getFramePosition());
    }
 }

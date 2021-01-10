@@ -642,7 +642,7 @@ public class LQRMomentumControllerTest
 
       List<Trajectory3D> relativeVRPTrajectories = new ArrayList<>();
       Trajectory3D lastTrajectory = trajectories.get(trajectories.size() - 1);
-      lastTrajectory.compute(lastTrajectory.getFinalTime());
+      lastTrajectory.compute(lastTrajectory.getEndTime());
       DMatrixRMaj finalVRPState = new DMatrixRMaj(3, 1);
       lastTrajectory.getPosition().get(finalVRPState);
 

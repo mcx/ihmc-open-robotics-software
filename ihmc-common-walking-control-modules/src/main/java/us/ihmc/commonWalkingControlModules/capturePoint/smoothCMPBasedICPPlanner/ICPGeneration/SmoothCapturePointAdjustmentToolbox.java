@@ -113,7 +113,7 @@ public class SmoothCapturePointAdjustmentToolbox
    private static void setGeneralizedBoundaryConstraintCMP0(DMatrixRMaj boundaryConditionVectorToPack, DMatrixRMaj boundaryConditionMatrixToPack,
                                                             int order, int numberOfConstrainedDerivatives, Trajectory cmpPolynomialSegment1)
    {
-      double tInitial1 = cmpPolynomialSegment1.getInitialTime();
+      double tInitial1 = cmpPolynomialSegment1.getStartTime();
 
       boundaryConditionVectorToPack.set(order + numberOfConstrainedDerivatives, cmpPolynomialSegment1.getDerivative(order, tInitial1));
 
@@ -126,8 +126,8 @@ public class SmoothCapturePointAdjustmentToolbox
                                                             int order, int numberOfCoefficients, int numberOfConstrainedDerivatives,
                                                             Trajectory cmpPolynomialSegment1, Trajectory cmpPolynomialSegment2)
    {
-      double tFinal1 = cmpPolynomialSegment1.getFinalTime();
-      double tInitial2 = cmpPolynomialSegment2.getInitialTime();
+      double tFinal1 = cmpPolynomialSegment1.getEndTime();
+      double tInitial2 = cmpPolynomialSegment2.getStartTime();
 
       boundaryConditionVectorToPack.set(order + 2 * numberOfConstrainedDerivatives, 0.0);
 
@@ -144,7 +144,7 @@ public class SmoothCapturePointAdjustmentToolbox
                                                             int order, int numberOfCoefficients, int numberOfConstrainedDerivatives,
                                                             Trajectory cmpPolynomialSegment2)
    {
-      double tFinal2 = cmpPolynomialSegment2.getFinalTime();
+      double tFinal2 = cmpPolynomialSegment2.getEndTime();
 
       boundaryConditionVectorToPack.set(order + 3 * numberOfConstrainedDerivatives, cmpPolynomialSegment2.getDerivative(order, tFinal2));
 
@@ -167,7 +167,7 @@ public class SmoothCapturePointAdjustmentToolbox
 
    private void calculateGeneralizedICPMatricesOnCMPSegment2(double omega0, Trajectory cmpPolynomialSegment2)
    {
-      double tInitial2 = cmpPolynomialSegment2.getInitialTime();
+      double tInitial2 = cmpPolynomialSegment2.getStartTime();
       generalizedGammaPrimeSegment2 = SmoothCapturePointToolbox.calculateGeneralizedMatricesPrimeOnCMPSegment1D(omega0, tInitial2, 0, cmpPolynomialSegment2,
                                                                                                                 generalizedAlphaPrimeRowSegment2,
                                                                                                                 generalizedBetaPrimeRowSegment2,
@@ -176,7 +176,7 @@ public class SmoothCapturePointAdjustmentToolbox
 
    private void calculateGeneralizedICPMatricesOnCMPSegment1(double omega0, int derivativeOrder, Trajectory cmpPolynomialSegment1)
    {
-      double tInitial1 = cmpPolynomialSegment1.getInitialTime();
+      double tInitial1 = cmpPolynomialSegment1.getStartTime();
       generalizedGammaPrimeSegment1 = SmoothCapturePointToolbox.calculateGeneralizedMatricesPrimeOnCMPSegment1D(omega0, tInitial1, derivativeOrder,
                                                                                                                 cmpPolynomialSegment1,
                                                                                                                 generalizedAlphaPrimeRowSegment1,

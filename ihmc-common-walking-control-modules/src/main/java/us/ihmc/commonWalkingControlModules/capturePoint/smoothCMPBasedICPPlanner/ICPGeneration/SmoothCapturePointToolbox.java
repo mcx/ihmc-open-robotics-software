@@ -45,7 +45,7 @@ public class SmoothCapturePointToolbox
       entryCornerPointsToPack.clear();
       exitCornerPointsToPack.clear();
 
-      cmpPolynomial3D.compute(cmpPolynomial3D.getFinalTime());
+      cmpPolynomial3D.compute(cmpPolynomial3D.getEndTime());
       FramePoint3DReadOnly nextEntryCornerPoint = cmpPolynomial3D.getFramePosition();
 
       for (int i = cmpPolynomials3D.size() - 1; i >= 0; i--)
@@ -57,7 +57,7 @@ public class SmoothCapturePointToolbox
 
          exitCornerPoint.set(nextEntryCornerPoint);
 
-         computeDesiredCapturePointPosition3D(omega0, cmpPolynomial3D.getInitialTime(), exitCornerPoint, cmpPolynomial3D, entryCornerPoint);
+         computeDesiredCapturePointPosition3D(omega0, cmpPolynomial3D.getStartTime(), exitCornerPoint, cmpPolynomial3D, entryCornerPoint);
          nextEntryCornerPoint = entryCornerPoint;
       }
    }
@@ -71,7 +71,7 @@ public class SmoothCapturePointToolbox
       exitCornerPointsToPack.clear();
 
       // Get the terminal ICP location
-      cmpPolynomial3D.compute(cmpPolynomial3D.getFinalTime());
+      cmpPolynomial3D.compute(cmpPolynomial3D.getEndTime());
       FramePoint3DReadOnly nextEntryCornerPoint = cmpPolynomial3D.getFramePosition();
 
       for (int i = cmpPolynomials3D.size() - 1; i >= 0; i--)
@@ -83,7 +83,7 @@ public class SmoothCapturePointToolbox
 
          exitCornerPoint.set(nextEntryCornerPoint);
 
-         computeDesiredCapturePointPosition(omega0, cmpPolynomial3D.getInitialTime(), exitCornerPoint, cmpPolynomial3D, entryCornerPoint);
+         computeDesiredCapturePointPosition(omega0, cmpPolynomial3D.getStartTime(), exitCornerPoint, cmpPolynomial3D, entryCornerPoint);
          nextEntryCornerPoint = entryCornerPoint;
       }
    }
@@ -297,7 +297,7 @@ public class SmoothCapturePointToolbox
                                                                   int betaDerivativeOrder, FrameTrajectory3D cmpPolynomial3D)
    {
       int numberOfCoefficients = cmpPolynomial3D.getNumberOfCoefficients();
-      double timeSegmentTotal = cmpPolynomial3D.getFinalTime();
+      double timeSegmentTotal = cmpPolynomial3D.getEndTime();
 
       generalizedBetaPrimeToPack.zero();
 
@@ -326,7 +326,7 @@ public class SmoothCapturePointToolbox
                                                                   int betaDerivativeOrder, Trajectory cmpPolynomial)
    {
       int numberOfCoefficients = cmpPolynomial.getNumberOfCoefficients();
-      double timeSegmentTotal = cmpPolynomial.getFinalTime();
+      double timeSegmentTotal = cmpPolynomial.getEndTime();
 
       generalizedBetaPrimeRowToPack.reshape(1, numberOfCoefficients);
       generalizedBetaPrimeRowToPack.zero();
@@ -351,13 +351,13 @@ public class SmoothCapturePointToolbox
     */
    public static double calculateGeneralizedGammaPrimeOnCMPSegment3D(double omega0, double time, int gammaDerivativeOrder, FrameTrajectory3D cmpPolynomial3D)
    {
-      double timeSegmentTotal = cmpPolynomial3D.getFinalTime();
+      double timeSegmentTotal = cmpPolynomial3D.getEndTime();
       return SmoothCoMIntegrationToolbox.power(omega0, gammaDerivativeOrder) * Math.exp(omega0 * (time - timeSegmentTotal));
    }
 
    public static double calculateGeneralizedGammaPrimeOnCMPSegment1D(double omega0, double time, int gammaDerivativeOrder, Trajectory cmpPolynomial)
    {
-      double timeSegmentTotal = cmpPolynomial.getFinalTime();
+      double timeSegmentTotal = cmpPolynomial.getEndTime();
       return SmoothCoMIntegrationToolbox.power(omega0, gammaDerivativeOrder) * Math.exp(omega0 * (time - timeSegmentTotal));
    }
 

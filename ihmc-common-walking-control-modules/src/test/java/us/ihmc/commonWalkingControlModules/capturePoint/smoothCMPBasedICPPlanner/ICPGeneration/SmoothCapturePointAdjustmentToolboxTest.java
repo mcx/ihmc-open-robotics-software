@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import us.ihmc.commons.lists.RecyclingArrayList;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Disabled;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -115,41 +113,41 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp0QuantityBC = new FramePoint3D();
-            linear3DSegment1.getDerivative(j, linear3DSegment1.getInitialTime(), icp0QuantityBC);
+            linear3DSegment1.getDerivative(j, linear3DSegment1.getStartTime(), icp0QuantityBC);
             icp0QuantitiesBefore.add(icp0QuantityBC);
 
             FramePoint3D cmp0QuantityBC = new FramePoint3D();
-            linear3DSegment1.getDerivative(j, linear3DSegment1.getInitialTime(), cmp0QuantityBC);
+            linear3DSegment1.getDerivative(j, linear3DSegment1.getStartTime(), cmp0QuantityBC);
             cmp0QuantitiesBefore.add(cmp0QuantityBC);
 
             FramePoint3D cmp2QuantityBC = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getFinalTime(), cmp2QuantityBC);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getEndTime(), cmp2QuantityBC);
             cmp2QuantitiesBefore.add(cmp2QuantityBC);
          }
 
-         setICPInitialConditionsForAdjustment(cmpPolynomials3D.get(0).getInitialTime(), exitCornerPoints, cmpPolynomials3D,
-                                                                   numberOfSwingSegments, omega0);
+         setICPInitialConditionsForAdjustment(cmpPolynomials3D.get(0).getStartTime(), exitCornerPoints, cmpPolynomials3D,
+                                              numberOfSwingSegments, omega0);
          icpAdjustmentToolbox.adjustDesiredTrajectoriesForInitialSmoothing3D(omega0, cmpPolynomials3D, icpQuantityInitialConditionList, exitCornerPoints.get(1));
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPoints, exitCornerPoints, cmpPolynomials3D, omega0);
 
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp0QuantityAfter = new FramePoint3D();
-            linear3DSegment1.getDerivative(j, linear3DSegment1.getInitialTime(), icp0QuantityAfter);
+            linear3DSegment1.getDerivative(j, linear3DSegment1.getStartTime(), icp0QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", icp0QuantitiesBefore.get(j), icp0QuantityAfter, EPSILON);
             //
             FramePoint3D cmp0QuantityAfter = new FramePoint3D();
-            linear3DSegment1.getDerivative(j, linear3DSegment1.getInitialTime(), cmp0QuantityAfter);
+            linear3DSegment1.getDerivative(j, linear3DSegment1.getStartTime(), cmp0QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp0QuantitiesBefore.get(j), cmp0QuantityAfter, EPSILON);
 
             FramePoint3D cmp2QuantityAfter = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getFinalTime(), cmp2QuantityAfter);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getEndTime(), cmp2QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp2QuantitiesBefore.get(j), cmp2QuantityAfter, EPSILON);
 
             FramePoint3D cmp1QuantitySegment1 = new FramePoint3D();
-            linear3DSegment1.getDerivative(j, linear3DSegment1.getFinalTime(), cmp1QuantitySegment1);
+            linear3DSegment1.getDerivative(j, linear3DSegment1.getEndTime(), cmp1QuantitySegment1);
             FramePoint3D cmp1QuantitySegment2 = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getInitialTime(), cmp1QuantitySegment2);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getStartTime(), cmp1QuantitySegment2);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp1QuantitySegment1, cmp1QuantitySegment2, EPSILON);
          }
       }
@@ -237,21 +235,21 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityBC = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment1.getFinalTime(), j, linear3DSegment1,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment1.getEndTime(), j, linear3DSegment1,
                                                                             exitCornerPointsSwing.get(0), icp1QuantityBC); // TODO: Tranfer?!
 
             icp1QuantitiesBefore.add(icp1QuantityBC);
 
             FramePoint3D cmp1QuantityBC = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getInitialTime(), cmp1QuantityBC);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getStartTime(), cmp1QuantityBC);
             cmp1QuantitiesBefore.add(cmp1QuantityBC);
 
             FramePoint3D cmp3QuantityBC = new FramePoint3D();
-            linear3DSegment3.getDerivative(j, linear3DSegment3.getFinalTime(), cmp3QuantityBC);
+            linear3DSegment3.getDerivative(j, linear3DSegment3.getEndTime(), cmp3QuantityBC);
             cmp3QuantitiesBefore.add(cmp3QuantityBC);
          }
 
-         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getFinalTime(), exitCornerPointsSwing, cmpPolynomials3DSwing, numberOfSwingSegments,
+         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getEndTime(), exitCornerPointsSwing, cmpPolynomials3DSwing, numberOfSwingSegments,
                                               omega0);
 
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPointsTransfer, exitCornerPointsTransfer, cmpPolynomials3DTransfer, omega0);
@@ -262,22 +260,22 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityAfter = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment2.getInitialTime(), j, linear3DSegment2,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment2.getStartTime(), j, linear3DSegment2,
                                                                             exitCornerPointsTransfer.get(0), icp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", icp1QuantitiesBefore.get(j), icp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp1QuantityAfter = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getInitialTime(), cmp1QuantityAfter);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getStartTime(), cmp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp1QuantitiesBefore.get(j), cmp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp3QuantityAfter = new FramePoint3D();
-            linear3DSegment3.getDerivative(j, linear3DSegment3.getFinalTime(), cmp3QuantityAfter);
+            linear3DSegment3.getDerivative(j, linear3DSegment3.getEndTime(), cmp3QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp3QuantitiesBefore.get(j), cmp3QuantityAfter, EPSILON);
 
             FramePoint3D cmp2QuantitySegment2 = new FramePoint3D();
-            linear3DSegment2.getDerivative(j, linear3DSegment2.getFinalTime(), cmp2QuantitySegment2);
+            linear3DSegment2.getDerivative(j, linear3DSegment2.getEndTime(), cmp2QuantitySegment2);
             FramePoint3D cmp2QuantitySegment3 = new FramePoint3D();
-            linear3DSegment3.getDerivative(j, linear3DSegment3.getInitialTime(), cmp2QuantitySegment3);
+            linear3DSegment3.getDerivative(j, linear3DSegment3.getStartTime(), cmp2QuantitySegment3);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp2QuantitySegment2, cmp2QuantitySegment3, EPSILON);
          }
       }
@@ -394,22 +392,22 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityBC = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment1.getFinalTime() - endTimeOffset, j, linear3DSegment1,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment1.getEndTime() - endTimeOffset, j, linear3DSegment1,
                                                                             exitCornerPointsSwing.get(0), icp1QuantityBC); // TODO: Transfer?!
 
             icp1QuantitiesBefore.add(icp1QuantityBC);
 
             FramePoint3D cmp1QuantityBC = new FramePoint3D();
-            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getInitialTime(), cmp1QuantityBC);
+            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getStartTime(), cmp1QuantityBC);
             cmp1QuantitiesBefore.add(cmp1QuantityBC);
 
             FramePoint3D cmp3QuantityBC = new FramePoint3D();
-            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getFinalTime(), cmp3QuantityBC);
+            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getEndTime(), cmp3QuantityBC);
             cmp3QuantitiesBefore.add(cmp3QuantityBC);
          }
 
-         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getFinalTime() - endTimeOffset, exitCornerPointsSwing,
-                                                                   cmpPolynomials3DSwing, numberOfSwingSegments - 1, omega0);
+         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getEndTime() - endTimeOffset, exitCornerPointsSwing,
+                                              cmpPolynomials3DSwing, numberOfSwingSegments - 1, omega0);
 
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPointsTransferUpdated, exitCornerPointsTransferUpdated, cmpPolynomials3DTransferUpdated, omega0);
          icpAdjustmentToolbox.adjustDesiredTrajectoriesForInitialSmoothing3D(omega0, cmpPolynomials3DTransferUpdated, icpQuantityInitialConditionList, exitCornerPointsTransferUpdated.get(1));
@@ -419,22 +417,22 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityAfter = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment2Updated.getInitialTime(), j, linear3DSegment2Updated,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, linear3DSegment2Updated.getStartTime(), j, linear3DSegment2Updated,
                                                                             exitCornerPointsTransferUpdated.get(0), icp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", icp1QuantitiesBefore.get(j), icp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp1QuantityAfter = new FramePoint3D();
-            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getInitialTime(), cmp1QuantityAfter);
+            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getStartTime(), cmp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp1QuantitiesBefore.get(j), cmp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp3QuantityAfter = new FramePoint3D();
-            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getFinalTime(), cmp3QuantityAfter);
+            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getEndTime(), cmp3QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp3QuantitiesBefore.get(j), cmp3QuantityAfter, EPSILON);
 
             FramePoint3D cmp2QuantitySegment2 = new FramePoint3D();
-            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getFinalTime(), cmp2QuantitySegment2);
+            linear3DSegment2Updated.getDerivative(j, linear3DSegment2Updated.getEndTime(), cmp2QuantitySegment2);
             FramePoint3D cmp2QuantitySegment3 = new FramePoint3D();
-            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getInitialTime(), cmp2QuantitySegment3);
+            linear3DSegment3Updated.getDerivative(j, linear3DSegment3Updated.getStartTime(), cmp2QuantitySegment3);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp2QuantitySegment2, cmp2QuantitySegment3, EPSILON);
          }
       }
@@ -504,41 +502,41 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp0QuantityBC = new FramePoint3D();
-            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getInitialTime(), icp0QuantityBC);
+            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getStartTime(), icp0QuantityBC);
             icp0QuantitiesBefore.add(icp0QuantityBC);
 
             FramePoint3D cmp0QuantityBC = new FramePoint3D();
-            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getInitialTime(), cmp0QuantityBC);
+            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getStartTime(), cmp0QuantityBC);
             cmp0QuantitiesBefore.add(cmp0QuantityBC);
 
             FramePoint3D cmp2QuantityBC = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getFinalTime(), cmp2QuantityBC);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getEndTime(), cmp2QuantityBC);
             cmp2QuantitiesBefore.add(cmp2QuantityBC);
          }
 
-         setICPInitialConditionsForAdjustment(cmpPolynomials3D.get(0).getInitialTime(), exitCornerPoints, cmpPolynomials3D,
-                                                                   numberOfSwingSegments, omega0);
+         setICPInitialConditionsForAdjustment(cmpPolynomials3D.get(0).getStartTime(), exitCornerPoints, cmpPolynomials3D,
+                                              numberOfSwingSegments, omega0);
          icpAdjustmentToolbox.adjustDesiredTrajectoriesForInitialSmoothing3D(omega0, cmpPolynomials3D, icpQuantityInitialConditionList, exitCornerPoints.get(1));
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPoints, exitCornerPoints, cmpPolynomials3D, omega0);
 
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp0QuantityAfter = new FramePoint3D();
-            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getInitialTime(), icp0QuantityAfter);
+            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getStartTime(), icp0QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", icp0QuantitiesBefore.get(j), icp0QuantityAfter, EPSILON);
 
             FramePoint3D cmp0QuantityAfter = new FramePoint3D();
-            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getInitialTime(), cmp0QuantityAfter);
+            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getStartTime(), cmp0QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp0QuantitiesBefore.get(j), cmp0QuantityAfter, EPSILON);
 
             FramePoint3D cmp2QuantityAfter = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getFinalTime(), cmp2QuantityAfter);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getEndTime(), cmp2QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("" + j, cmp2QuantitiesBefore.get(j), cmp2QuantityAfter, EPSILON);
 
             FramePoint3D cmp1QuantitySegment1 = new FramePoint3D();
-            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getFinalTime(), cmp1QuantitySegment1);
+            cubic3DSegment1.getDerivative(j, cubic3DSegment1.getEndTime(), cmp1QuantitySegment1);
             FramePoint3D cmp1QuantitySegment2 = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getInitialTime(), cmp1QuantitySegment2);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getStartTime(), cmp1QuantitySegment2);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp1QuantitySegment1, cmp1QuantitySegment2, EPSILON);
          }
       }
@@ -626,21 +624,21 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityBC = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, cubic3DSegment1.getFinalTime(), j, cubic3DSegment1,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, cubic3DSegment1.getEndTime(), j, cubic3DSegment1,
                                                                             exitCornerPointsSwing.get(0), icp1QuantityBC);
             icp1QuantitiesBefore.add(icp1QuantityBC);
 
             FramePoint3D cmp1QuantityBC = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getInitialTime(), cmp1QuantityBC);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getStartTime(), cmp1QuantityBC);
             cmp1QuantitiesBefore.add(cmp1QuantityBC);
 
             FramePoint3D cmp3QuantityBC = new FramePoint3D();
-            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getFinalTime(), cmp3QuantityBC);
+            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getEndTime(), cmp3QuantityBC);
             cmp3QuantitiesBefore.add(cmp3QuantityBC);
          }
 
-         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getFinalTime(), exitCornerPointsSwing, cmpPolynomials3DSwing,
-                                                                   numberOfSwingSegments, omega0);
+         setICPInitialConditionsForAdjustment(cmpPolynomials3DSwing.get(0).getEndTime(), exitCornerPointsSwing, cmpPolynomials3DSwing,
+                                              numberOfSwingSegments, omega0);
 
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPointsTransfer, exitCornerPointsTransfer, cmpPolynomials3DTransfer, omega0);
          icpAdjustmentToolbox.adjustDesiredTrajectoriesForInitialSmoothing3D(omega0, cmpPolynomials3DTransfer, icpQuantityInitialConditionList, exitCornerPointsTransfer.get(1));
@@ -650,22 +648,22 @@ public class SmoothCapturePointAdjustmentToolboxTest
          for (int j = 0; j < numberOfCoefficients / 2; j++)
          {
             FramePoint3D icp1QuantityAfter = new FramePoint3D();
-            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, cubic3DSegment2.getInitialTime(), j, cubic3DSegment2,
+            icpToolbox.calculateICPQuantityFromCorrespondingCMPPolynomial3D(omega0, cubic3DSegment2.getStartTime(), j, cubic3DSegment2,
                                                                             exitCornerPointsTransfer.get(0), icp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("" + j, icp1QuantitiesBefore.get(j), icp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp1QuantityAfter = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getInitialTime(), cmp1QuantityAfter);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getStartTime(), cmp1QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp1QuantitiesBefore.get(j), cmp1QuantityAfter, EPSILON);
 
             FramePoint3D cmp3QuantityAfter = new FramePoint3D();
-            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getFinalTime(), cmp3QuantityAfter);
+            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getEndTime(), cmp3QuantityAfter);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp3QuantitiesBefore.get(j), cmp3QuantityAfter, EPSILON);
 
             FramePoint3D cmp2QuantitySegment2 = new FramePoint3D();
-            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getFinalTime(), cmp2QuantitySegment2);
+            cubic3DSegment2.getDerivative(j, cubic3DSegment2.getEndTime(), cmp2QuantitySegment2);
             FramePoint3D cmp2QuantitySegment3 = new FramePoint3D();
-            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getInitialTime(), cmp2QuantitySegment3);
+            cubic3DSegment3.getDerivative(j, cubic3DSegment3.getStartTime(), cmp2QuantitySegment3);
             EuclidCoreTestTools.assertTuple3DEquals("", cmp2QuantitySegment2, cmp2QuantitySegment3, EPSILON);
          }
       }

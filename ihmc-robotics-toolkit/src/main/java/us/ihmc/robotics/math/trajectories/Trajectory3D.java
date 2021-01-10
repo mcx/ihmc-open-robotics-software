@@ -13,8 +13,9 @@ import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.euclid.tuple3D.interfaces.Tuple3DBasics;
 import us.ihmc.euclid.tuple3D.interfaces.Tuple3DReadOnly;
 import us.ihmc.euclid.tuple3D.interfaces.Vector3DReadOnly;
+import us.ihmc.robotics.time.TimeIntervalBasics;
 
-public class Trajectory3D
+public class Trajectory3D implements Trajectory3DReadOnly, TimeIntervalBasics
 {
    protected final Trajectory xTrajectory;
    protected final Trajectory yTrajectory;
@@ -218,16 +219,19 @@ public class Trajectory3D
       zTrajectory.compute(t);
    }
 
+   @Override
    public Point3DReadOnly getPosition()
    {
       return position;
    }
 
+   @Override
    public Vector3DReadOnly getVelocity()
    {
       return velocity;
    }
 
+   @Override
    public Vector3DReadOnly getAcceleration()
    {
       return acceleration;
@@ -266,12 +270,6 @@ public class Trajectory3D
       return zTrajectory;
    }
 
-   public void setTime(double tInital, double tFinal)
-   {
-      setInitialTime(tInital);
-      setFinalTime(tFinal);
-   }
-
    public void offsetTrajectoryPosition(double offsetX, double offsetY, double offsetZ)
    {
       getTrajectoryX().offsetTrajectoryPosition(offsetX);
@@ -279,16 +277,16 @@ public class Trajectory3D
       getTrajectoryZ().offsetTrajectoryPosition(offsetZ);
    }
 
-   public void setInitialTime(double tInitial)
+   public void setStartTime(double tInitial)
    {
       for (int i = 0; i < 3; i++)
-         getTrajectory(i).setInitialTime(tInitial);
+         getTrajectory(i).setStartTime(tInitial);
    }
 
-   public void setFinalTime(double tFinal)
+   public void setEndTime(double tFinal)
    {
       for (int i = 0; i < 3; i++)
-         getTrajectory(i).setFinalTime(tFinal);
+         getTrajectory(i).setEndTime(tFinal);
    }
 
    public void setInitialTimeMaintainingBounds(double tInitial)
@@ -301,55 +299,53 @@ public class Trajectory3D
    {
       for (int i = 0; i < 3; i++)
          getTrajectory(i).setFinalTimeMaintainingBounds(tFinal);
+
    }
 
-   public double getDuration()
+   @Override
+   public double getStartTime()
    {
-      return getFinalTime() - getInitialTime();
-   }
-
-   public double getInitialTime()
-   {
-      if (MathTools.epsilonCompare(xTrajectory.getInitialTime(), yTrajectory.getInitialTime(), Epsilons.ONE_THOUSANDTH)
-            && MathTools.epsilonCompare(xTrajectory.getInitialTime(), zTrajectory.getInitialTime(), Epsilons.ONE_THOUSANDTH))
-         return xTrajectory.getInitialTime();
+      if (MathTools.epsilonCompare(xTrajectory.getStartTime(), yTrajectory.getStartTime(), Epsilons.ONE_THOUSANDTH)
+            && MathTools.epsilonCompare(xTrajectory.getStartTime(), zTrajectory.getStartTime(), Epsilons.ONE_THOUSANDTH))
+         return xTrajectory.getStartTime();
       else
       {
          //PrintTools.warn("Trajectory initial times do not match. Using X trajectory times for computation");
-         return xTrajectory.getInitialTime();
+         return xTrajectory.getStartTime();
       }
    }
 
-   public double getFinalTime()
+   @Override
+   public double getEndTime()
    {
-      if (MathTools.epsilonCompare(xTrajectory.getFinalTime(), yTrajectory.getFinalTime(), Epsilons.ONE_THOUSANDTH)
-            && MathTools.epsilonCompare(xTrajectory.getFinalTime(), zTrajectory.getFinalTime(), Epsilons.ONE_THOUSANDTH))
-         return xTrajectory.getFinalTime();
+      if (MathTools.epsilonCompare(xTrajectory.getEndTime(), yTrajectory.getEndTime(), Epsilons.ONE_THOUSANDTH)
+            && MathTools.epsilonCompare(xTrajectory.getEndTime(), zTrajectory.getEndTime(), Epsilons.ONE_THOUSANDTH))
+         return xTrajectory.getEndTime();
       else
       {
          //PrintTools.warn("Trajectory final times do not match. Using X trajectory times for computation");
-         return xTrajectory.getFinalTime();
+         return xTrajectory.getEndTime();
       }
    }
 
-   public double getInitialTime(Axis3D dir)
+   public double getStartTime(Axis3D dir)
    {
-      return getTrajectory(dir).getInitialTime();
+      return getTrajectory(dir).getStartTime();
    }
 
-   public double getInitialTime(int index)
+   public double getStartTime(int index)
    {
-      return getTrajectory(index).getInitialTime();
+      return getTrajectory(index).getStartTime();
    }
 
-   public double getFinalTime(Axis3D dir)
+   public double getEndTime(Axis3D dir)
    {
-      return getTrajectory(dir).getFinalTime();
+      return getTrajectory(dir).getEndTime();
    }
 
-   public double getFinalTime(int index)
+   public double getEndTime(int index)
    {
-      return getTrajectory(index).getFinalTime();
+      return getTrajectory(index).getEndTime();
    }
 
    public boolean timeIntervalContains(double timeToCheck, double epsilon)
@@ -769,13 +765,13 @@ public class Trajectory3D
 
    public void getStartPoint(Point3DBasics positionToPack)
    {
-      compute(getInitialTime());
+      compute(getStartTime());
       positionToPack.set(getPosition());
    }
 
    public void getEndPoint(Point3DBasics positionToPack)
    {
-      compute(getFinalTime());
+      compute(getEndTime());
       positionToPack.set(getPosition());
    }
 

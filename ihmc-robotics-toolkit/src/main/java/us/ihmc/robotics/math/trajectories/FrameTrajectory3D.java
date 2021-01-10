@@ -553,13 +553,13 @@ public class FrameTrajectory3D extends Trajectory3D implements ReferenceFrameHol
 
    public void getFramePositionInitial(FramePoint3D positionToPack)
    {
-      compute(xTrajectory.getInitialTime());
+      compute(xTrajectory.getStartTime());
       positionToPack.setIncludingFrame(referenceFrame, getPosition());
    }
 
    public void getFramePositionFinal(FramePoint3D positionToPack)
    {
-      compute(xTrajectory.getFinalTime());
+      compute(xTrajectory.getEndTime());
       positionToPack.setIncludingFrame(referenceFrame, getPosition());
    }
 

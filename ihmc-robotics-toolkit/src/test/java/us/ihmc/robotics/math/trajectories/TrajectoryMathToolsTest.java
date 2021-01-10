@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import gnu.trove.list.array.TDoubleArrayList;
 import us.ihmc.commons.Epsilons;
 import us.ihmc.commons.RandomNumbers;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Disabled;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
@@ -104,10 +103,10 @@ public class TrajectoryMathToolsTest
          TrajectoryMathTools.scale(traj2, scalar);
          TrajectoryMathTools.scale(traj3, traj1, scalar);
 
-         assertEquals(traj1.getInitialTime(), traj2.getInitialTime(), epsilon);
-         assertEquals(traj1.getInitialTime(), traj3.getInitialTime(), epsilon);
-         assertEquals(traj1.getFinalTime(), traj2.getFinalTime(), epsilon);
-         assertEquals(traj1.getFinalTime(), traj3.getFinalTime(), epsilon);
+         assertEquals(traj1.getStartTime(), traj2.getStartTime(), epsilon);
+         assertEquals(traj1.getStartTime(), traj3.getStartTime(), epsilon);
+         assertEquals(traj1.getEndTime(), traj2.getEndTime(), epsilon);
+         assertEquals(traj1.getEndTime(), traj3.getEndTime(), epsilon);
          double dt = 0.01;
          for (double time = startTime; time < endTime; time += dt)
          {
@@ -142,10 +141,10 @@ public class TrajectoryMathToolsTest
          TrajectoryMathTools.scale(scalar, traj3d2);
          TrajectoryMathTools.scale(traj3d3, traj3d1, scalar);
 
-         assertEquals(traj3d1.getInitialTime(), traj3d2.getInitialTime(), epsilon);
-         assertEquals(traj3d1.getInitialTime(), traj3d3.getInitialTime(), epsilon);
-         assertEquals(traj3d1.getFinalTime(), traj3d2.getFinalTime(), epsilon);
-         assertEquals(traj3d1.getFinalTime(), traj3d3.getFinalTime(), epsilon);
+         assertEquals(traj3d1.getStartTime(), traj3d2.getStartTime(), epsilon);
+         assertEquals(traj3d1.getStartTime(), traj3d3.getStartTime(), epsilon);
+         assertEquals(traj3d1.getEndTime(), traj3d2.getEndTime(), epsilon);
+         assertEquals(traj3d1.getEndTime(), traj3d3.getEndTime(), epsilon);
          double dt = 0.01;
          for (double time = startTime; time < endTime; time += dt)
          {
@@ -240,8 +239,8 @@ public class TrajectoryMathToolsTest
       Assert.assertEquals(thirdSummedTrajectory.getNumberOfCoefficients(), numberOfCoefficients);
 
       // check first trajectory
-      Assert.assertEquals(firstSummedTrajectory.getInitialTime(), firstStartTime, epsilon);
-      Assert.assertEquals(firstSummedTrajectory.getFinalTime(), secondStartTime, epsilon);
+      Assert.assertEquals(firstSummedTrajectory.getStartTime(), firstStartTime, epsilon);
+      Assert.assertEquals(firstSummedTrajectory.getEndTime(), secondStartTime, epsilon);
       double sign = !testAddition && firstTrajectoryToStart == trajectory2 ? -1.0 : 1.0;
       for (int j = 0; j < numberOfCoefficients; j++)
       {
@@ -249,8 +248,8 @@ public class TrajectoryMathToolsTest
       }
 
       // check middle trajectory
-      Assert.assertEquals(secondSummedTrajectory.getInitialTime(), secondStartTime, epsilon);
-      Assert.assertEquals(secondSummedTrajectory.getFinalTime(), firstEndTime, epsilon);
+      Assert.assertEquals(secondSummedTrajectory.getStartTime(), secondStartTime, epsilon);
+      Assert.assertEquals(secondSummedTrajectory.getEndTime(), firstEndTime, epsilon);
       sign = testAddition ? 1.0 : -1.0;
       for (int j = 0; j < numberOfCoefficients; j++)
       {
@@ -258,8 +257,8 @@ public class TrajectoryMathToolsTest
       }
 
       // check last trajectory
-      Assert.assertEquals(thirdSummedTrajectory.getInitialTime(), firstEndTime, epsilon);
-      Assert.assertEquals(thirdSummedTrajectory.getFinalTime(), secondEndTime, epsilon);
+      Assert.assertEquals(thirdSummedTrajectory.getStartTime(), firstEndTime, epsilon);
+      Assert.assertEquals(thirdSummedTrajectory.getEndTime(), secondEndTime, epsilon);
       sign = !testAddition && lastTrajectoryToEnd == trajectory2 ? -1.0 : 1.0;
       for (int j = 0; j < numberOfCoefficients; j++)
       {
@@ -492,24 +491,24 @@ public class TrajectoryMathToolsTest
       Trajectory traj3 = resultTrajectoryList.get(0);
       Trajectory traj4 = resultTrajectoryList.get(1);
       Trajectory traj5 = resultTrajectoryList.get(2);
-      assertEquals(traj3.getInitialTime(), 0.0, epsilon);
-      assertEquals(traj3.getFinalTime(), 1.0, epsilon);
+      assertEquals(traj3.getStartTime(), 0.0, epsilon);
+      assertEquals(traj3.getEndTime(), 1.0, epsilon);
       Assert.assertTrue(traj3.getNumberOfCoefficients() == 4);
       assertEquals(traj3.getCoefficient(0), 2.1000, epsilon);
       assertEquals(traj3.getCoefficient(1), 0.0000, epsilon);
       assertEquals(traj3.getCoefficient(2), 0.7000, epsilon);
       assertEquals(traj3.getCoefficient(3), -0.0777778, epsilon);
 
-      assertEquals(traj4.getInitialTime(), 1.0, epsilon);
-      assertEquals(traj4.getFinalTime(), 6.0, epsilon);
+      assertEquals(traj4.getStartTime(), 1.0, epsilon);
+      assertEquals(traj4.getEndTime(), 6.0, epsilon);
       Assert.assertTrue(traj4.getNumberOfCoefficients() == 4);
       assertEquals(traj4.getCoefficient(0), 2.1000 + 9.91975309, epsilon);
       assertEquals(traj4.getCoefficient(1), 0.0000 + 1.407407407, epsilon);
       assertEquals(traj4.getCoefficient(2), 0.7000 - 0.77407407, epsilon);
       assertEquals(traj4.getCoefficient(3), -0.077777778 + 0.0469135802, epsilon);
 
-      assertEquals(traj5.getInitialTime(), 6.0, epsilon);
-      assertEquals(traj5.getFinalTime(), 10.0, epsilon);
+      assertEquals(traj5.getStartTime(), 6.0, epsilon);
+      assertEquals(traj5.getEndTime(), 10.0, epsilon);
       Assert.assertTrue(traj5.getNumberOfCoefficients() == 4);
       assertEquals(traj5.getCoefficient(0), 9.91975309, epsilon);
       assertEquals(traj5.getCoefficient(1), 1.407407407, epsilon);
@@ -607,8 +606,8 @@ public class TrajectoryMathToolsTest
       Assert.assertTrue(numberOfSegments == 2);
       Trajectory traj3 = resultTrajectoryList.get(0);
       Trajectory traj4 = resultTrajectoryList.get(1);
-      assertEquals(traj3.getInitialTime(), 1.0, epsilon);
-      assertEquals(traj3.getFinalTime(), 6.0, epsilon);
+      assertEquals(traj3.getStartTime(), 1.0, epsilon);
+      assertEquals(traj3.getEndTime(), 6.0, epsilon);
       Assert.assertTrue(traj3.getNumberOfCoefficients() == 7);
       assertEquals(traj3.getCoefficient(0), -1.956841152263374, epsilon);
       assertEquals(traj3.getCoefficient(1), 0.388404938271605, epsilon);
@@ -618,8 +617,8 @@ public class TrajectoryMathToolsTest
       assertEquals(traj3.getCoefficient(5), -0.003484444444444, epsilon);
       assertEquals(traj3.getCoefficient(6), 0.000129053497942, epsilon);
 
-      assertEquals(traj4.getInitialTime(), 6.0, epsilon);
-      assertEquals(traj4.getFinalTime(), 10.0, epsilon);
+      assertEquals(traj4.getStartTime(), 6.0, epsilon);
+      assertEquals(traj4.getEndTime(), 10.0, epsilon);
       Assert.assertTrue(traj4.getNumberOfCoefficients() == 4);
       assertEquals(traj4.getCoefficient(0), 0, epsilon);
       assertEquals(traj4.getCoefficient(1), 0, epsilon);
@@ -637,22 +636,22 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.add(traj1, traj1, traj2);
 
       Trajectory traj = traj1.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), 0.5, epsilon);
       assertEquals(traj.getCoefficient(1), 5.5, epsilon);
 
       traj = traj1.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), 0.1, epsilon);
       assertEquals(traj.getCoefficient(1), 9.9 + 7.7, epsilon);
 
       traj = traj1.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), 10, epsilon);
       assertEquals(traj.getCoefficient(1), -4, epsilon);
@@ -669,22 +668,22 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.subtract(resultingTrajectory, traj1, traj2);
 
       Trajectory traj = resultingTrajectory.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), -3.04, epsilon);
       assertEquals(traj.getCoefficient(1), 0.62, epsilon);
 
       traj = resultingTrajectory.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), 1.824, epsilon);
       assertEquals(traj.getCoefficient(1), -5.794, epsilon);
 
       traj = resultingTrajectory.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), -11.03, epsilon);
       assertEquals(traj.getCoefficient(1), 15.26, epsilon);
@@ -700,22 +699,22 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.subtractEquals(traj1, traj2);
 
       Trajectory traj = traj1.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), -3.04, epsilon);
       assertEquals(traj.getCoefficient(1), 0.62, epsilon);
 
       traj = traj1.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), 1.824, epsilon);
       assertEquals(traj.getCoefficient(1), -5.794, epsilon);
 
       traj = traj1.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 2);
       assertEquals(traj.getCoefficient(0), -11.03, epsilon);
       assertEquals(traj.getCoefficient(1), 15.26, epsilon);
@@ -731,24 +730,24 @@ public class TrajectoryMathToolsTest
       trajMath.dotProduct(traj1, traj1, traj2);
 
       Trajectory traj = traj1.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), 2, epsilon);
       assertEquals(traj.getCoefficient(1), 13, epsilon);
       assertEquals(traj.getCoefficient(2), 15, epsilon);
 
       traj = traj1.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), 12, epsilon);
       assertEquals(traj.getCoefficient(1), 1, epsilon);
       assertEquals(traj.getCoefficient(2), -1, epsilon);
 
       traj = traj1.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), 30, epsilon);
       assertEquals(traj.getCoefficient(1), -43, epsilon);
@@ -766,24 +765,24 @@ public class TrajectoryMathToolsTest
       trajMath.crossProduct(resultingTrajectory, traj1, traj2);
 
       Trajectory traj = resultingTrajectory.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), -2, epsilon);
       assertEquals(traj.getCoefficient(1), 8, epsilon);
       assertEquals(traj.getCoefficient(2), -8, epsilon);
 
       traj = resultingTrajectory.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), 4, epsilon);
       assertEquals(traj.getCoefficient(1), -16, epsilon);
       assertEquals(traj.getCoefficient(2), 16, epsilon);
 
       traj = resultingTrajectory.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), -2, epsilon);
       assertEquals(traj.getCoefficient(1), 8, epsilon);
@@ -800,24 +799,24 @@ public class TrajectoryMathToolsTest
       trajMath.crossProduct(traj1, traj2);
 
       Trajectory traj = traj1.getTrajectoryX();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), -2, epsilon);
       assertEquals(traj.getCoefficient(1), 8, epsilon);
       assertEquals(traj.getCoefficient(2), -8, epsilon);
 
       traj = traj1.getTrajectoryY();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), 4, epsilon);
       assertEquals(traj.getCoefficient(1), -16, epsilon);
       assertEquals(traj.getCoefficient(2), 16, epsilon);
 
       traj = traj1.getTrajectoryZ();
-      assertEquals(traj.getInitialTime(), 0, epsilon);
-      assertEquals(traj.getFinalTime(), 1, epsilon);
+      assertEquals(traj.getStartTime(), 0, epsilon);
+      assertEquals(traj.getEndTime(), 1, epsilon);
       Assert.assertTrue(traj.getNumberOfCoefficients() == 3);
       assertEquals(traj.getCoefficient(0), -2, epsilon);
       assertEquals(traj.getCoefficient(1), 8, epsilon);
@@ -848,8 +847,8 @@ public class TrajectoryMathToolsTest
       Trajectory derivativeTrajectory = new Trajectory(3);
       TrajectoryMathTools.getDerivative(derivativeTrajectory, cubicTrajectory);
 
-      Assert.assertEquals(derivativeTrajectory.getInitialTime(), 1.0, epsilon);
-      Assert.assertEquals(derivativeTrajectory.getFinalTime(), 2.0, epsilon);
+      Assert.assertEquals(derivativeTrajectory.getStartTime(), 1.0, epsilon);
+      Assert.assertEquals(derivativeTrajectory.getEndTime(), 2.0, epsilon);
       Assert.assertEquals(derivativeTrajectory.getNumberOfCoefficients(), 3);
       Assert.assertEquals(derivativeTrajectory.getCoefficient(0), 3.0, epsilon);
       Assert.assertEquals(derivativeTrajectory.getCoefficient(1), -4.0, epsilon);
@@ -875,8 +874,8 @@ public class TrajectoryMathToolsTest
       constantTrajectory.setConstant(0.0, 1.0, 2.0);
       TrajectoryMathTools.getDerivative(derivativeTrajectory, constantTrajectory);
 
-      Assert.assertEquals(derivativeTrajectory.getInitialTime(), 0.0, epsilon);
-      Assert.assertEquals(derivativeTrajectory.getFinalTime(), 1.0, epsilon);
+      Assert.assertEquals(derivativeTrajectory.getStartTime(), 0.0, epsilon);
+      Assert.assertEquals(derivativeTrajectory.getEndTime(), 1.0, epsilon);
       Assert.assertEquals(derivativeTrajectory.getNumberOfCoefficients(), 1);
       Assert.assertEquals(derivativeTrajectory.getCoefficient(0), 0.0, epsilon);
    }
@@ -1008,41 +1007,41 @@ public class TrajectoryMathToolsTest
       traj1.add().setLinear(1.0, 2.0, new FramePoint3D(worldFrame, 15, 20, 25), new FramePoint3D(worldFrame, 20, 25, 30));
       traj1.add().setLinear(2.0, 3.0, new FramePoint3D(worldFrame, 25, 28, 31), new FramePoint3D(worldFrame, 35, 38, 41));
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(2).getEndTime(), epsilon);
 
       traj2.add().setLinear(0.5, 0.6, new FramePoint3D(worldFrame, 1, 2, 3), new FramePoint3D(worldFrame, 3, 2, 1));
       traj2.add().setLinear(1.2, 2.2, new FramePoint3D(worldFrame, 3, 2, 1), new FramePoint3D(worldFrame, 4, 5, 6));
 
-      assertEquals(0.5, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.6, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.2, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.2, traj2.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.6, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.2, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.2, traj2.getSegment(1).getEndTime(), epsilon);
 
       // should have 0.0-0.5, 0.5-0.6, 0.6-1.0, 1.0-1.2, 1.2-2.0, 2.0-2.2, 2.2-3.0
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.6, traj3.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(0.6, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(1.2, traj3.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(1).getEndTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(3).getStartTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(1.2, traj3.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(2.0, traj3.getSegment(4).getFinalTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(4).getStartTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(4).getEndTime(), epsilon);
 
-      assertEquals(2.0, traj3.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(2.2, traj3.getSegment(5).getFinalTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(5).getStartTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(5).getEndTime(), epsilon);
 
-      assertEquals(2.2, traj3.getSegment(6).getInitialTime(), epsilon);
-      assertEquals(3.0, traj3.getSegment(6).getFinalTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(6).getStartTime(), epsilon);
+      assertEquals(3.0, traj3.getSegment(6).getEndTime(), epsilon);
 
       assertEquals(7, traj3.getNumberOfSegments());
 
@@ -1063,14 +1062,14 @@ public class TrajectoryMathToolsTest
       traj1.add().setLinear(2.0, 3.0, new FramePoint3D(worldFrame, 25, 28, 31), new FramePoint3D(worldFrame, 35, 38, 41));
       traj1.add().setLinear(3.0, 4.0, new FramePoint3D(worldFrame, 25, 28, 31), new FramePoint3D(worldFrame, 35, 38, 41));
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(4.0, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(4.0, traj1.getSegment(3).getEndTime(), epsilon);
 
       traj2.add().setLinear(0.5, 0.6, new FramePoint3D(worldFrame, 1, 2, 3), new FramePoint3D(worldFrame, 3, 2, 1));
       traj2.add().setLinear(0.7, 1.0, new FramePoint3D(worldFrame, 1, 2, 3), new FramePoint3D(worldFrame, 3, 2, 1));
@@ -1078,56 +1077,56 @@ public class TrajectoryMathToolsTest
       traj2.add().setLinear(2.7, 3.5, new FramePoint3D(worldFrame, 3, 2, 1), new FramePoint3D(worldFrame, 4, 5, 6));
       traj2.add().setLinear(3.9, 4.7, new FramePoint3D(worldFrame, 3, 2, 1), new FramePoint3D(worldFrame, 4, 5, 6));
 
-      assertEquals(0.5, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.6, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(0.7, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(1.2, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.2, traj2.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.5, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.6, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(0.7, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(1.2, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.2, traj2.getSegment(2).getEndTime(), epsilon);
 
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, Epsilons.ONE_BILLIONTH);
 
       // should have 0.0-0.5, 0.5-0.6, 0.6-0.7, 0.7-1.0, 1.0-1.2, 1.2-2.0, 2.0-2.2, 2.2-2.7,
       // 2.7-3.0, 3.0-3.5, 3.5-3.9, 3.9-4.0, 4.0-4.7
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.6, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.6, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(0.7, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(2).getEndTime(), epsilon);
 
-      assertEquals(0.7, traj3.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(3).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(1.0, traj3.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(1.2, traj3.getSegment(4).getFinalTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(4).getStartTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(4).getEndTime(), epsilon);
 
-      assertEquals(1.2, traj3.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(2.0, traj3.getSegment(5).getFinalTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(5).getStartTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(5).getEndTime(), epsilon);
 
-      assertEquals(2.0, traj3.getSegment(6).getInitialTime(), epsilon);
-      assertEquals(2.2, traj3.getSegment(6).getFinalTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(6).getStartTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(6).getEndTime(), epsilon);
 
-      assertEquals(2.2, traj3.getSegment(7).getInitialTime(), epsilon);
-      assertEquals(2.7, traj3.getSegment(7).getFinalTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(7).getStartTime(), epsilon);
+      assertEquals(2.7, traj3.getSegment(7).getEndTime(), epsilon);
 
-      assertEquals(2.7, traj3.getSegment(8).getInitialTime(), epsilon);
-      assertEquals(3.0, traj3.getSegment(8).getFinalTime(), epsilon);
+      assertEquals(2.7, traj3.getSegment(8).getStartTime(), epsilon);
+      assertEquals(3.0, traj3.getSegment(8).getEndTime(), epsilon);
 
-      assertEquals(3.0, traj3.getSegment(9).getInitialTime(), epsilon);
-      assertEquals(3.5, traj3.getSegment(9).getFinalTime(), epsilon);
+      assertEquals(3.0, traj3.getSegment(9).getStartTime(), epsilon);
+      assertEquals(3.5, traj3.getSegment(9).getEndTime(), epsilon);
 
-      assertEquals(3.5, traj3.getSegment(10).getInitialTime(), epsilon);
-      assertEquals(3.9, traj3.getSegment(10).getFinalTime(), epsilon);
+      assertEquals(3.5, traj3.getSegment(10).getStartTime(), epsilon);
+      assertEquals(3.9, traj3.getSegment(10).getEndTime(), epsilon);
 
-      assertEquals(3.9, traj3.getSegment(11).getInitialTime(), epsilon);
-      assertEquals(4.0, traj3.getSegment(11).getFinalTime(), epsilon);
+      assertEquals(3.9, traj3.getSegment(11).getStartTime(), epsilon);
+      assertEquals(4.0, traj3.getSegment(11).getEndTime(), epsilon);
 
-      assertEquals(4.0, traj3.getSegment(12).getInitialTime(), epsilon);
-      assertEquals(4.7, traj3.getSegment(12).getFinalTime(), epsilon);
+      assertEquals(4.0, traj3.getSegment(12).getStartTime(), epsilon);
+      assertEquals(4.7, traj3.getSegment(12).getEndTime(), epsilon);
 
       assertEquals(13, traj3.getNumberOfSegments());
    }
@@ -1152,23 +1151,23 @@ public class TrajectoryMathToolsTest
       double minimumDuration = 0.11;
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, minimumDuration, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.6, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.6, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
 
-      assertEquals(1.0, traj3.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.0, traj3.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(2.0, traj3.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(2.2, traj3.getSegment(4).getFinalTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(4).getStartTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(4).getEndTime(), epsilon);
 
-      assertEquals(2.2, traj3.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(3.0, traj3.getSegment(5).getFinalTime(), epsilon);
+      assertEquals(2.2, traj3.getSegment(5).getStartTime(), epsilon);
+      assertEquals(3.0, traj3.getSegment(5).getEndTime(), epsilon);
 
    }
 
@@ -1192,23 +1191,23 @@ public class TrajectoryMathToolsTest
       double minimumDuration = 0.11;
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, minimumDuration, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.6, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.6, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.6, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
 
-      assertEquals(1.0, traj3.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(1.2, traj3.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(3).getStartTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(1.2, traj3.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(2.1, traj3.getSegment(4).getFinalTime(), epsilon);
+      assertEquals(1.2, traj3.getSegment(4).getStartTime(), epsilon);
+      assertEquals(2.1, traj3.getSegment(4).getEndTime(), epsilon);
 
-      assertEquals(2.1, traj3.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(3.0, traj3.getSegment(5).getFinalTime(), epsilon);
+      assertEquals(2.1, traj3.getSegment(5).getStartTime(), epsilon);
+      assertEquals(3.0, traj3.getSegment(5).getEndTime(), epsilon);
 
    }
 
@@ -1229,14 +1228,14 @@ public class TrajectoryMathToolsTest
       double minimumDuration = 0.11;
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, minimumDuration, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.7, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.7, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
    }
 
    @Disabled
@@ -1256,14 +1255,14 @@ public class TrajectoryMathToolsTest
       double minimumDuration = 0.11;
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, minimumDuration, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.7, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.7, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
    }
 
    @Test
@@ -1282,14 +1281,14 @@ public class TrajectoryMathToolsTest
       double minimumDuration = 0.11;
       TrajectoryMathTools.addSegmentedTrajectories(traj3, traj1, traj2, minimumDuration, Epsilons.ONE_BILLIONTH);
 
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(0).getEndTime(), epsilon);
 
-      assertEquals(0.5, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.7, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.5, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.7, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.7, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(2).getEndTime(), epsilon);
    }
 
    @Test
@@ -1306,30 +1305,30 @@ public class TrajectoryMathToolsTest
       traj1.add().setLinear(1.0, 2.0, new FramePoint3D(worldFrame, 15, 20, 25), new FramePoint3D(worldFrame, 20, 25, 30));
       traj1.add().setLinear(2.0, 3.0, new FramePoint3D(worldFrame, 25, 28, 31), new FramePoint3D(worldFrame, 35, 38, 41));
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(2).getEndTime(), epsilon);
 
       TrajectoryMathTools.setCurrentSegmentPolynomial(traj3.add(), traj1.getSegment(0), 0.0, 1.0, Epsilons.ONE_MILLIONTH);
 
       assertEquals(1, traj3.getNumberOfSegments());
-      assertEquals(0.0, traj3.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj3.getSegment(0).getFinalTime(), epsilon);
+      assertEquals(0.0, traj3.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(0).getEndTime(), epsilon);
 
       TrajectoryMathTools.setCurrentSegmentPolynomial(traj3.add(), traj1.getSegment(1), 1.0, 2.0, Epsilons.ONE_MILLIONTH);
 
       assertEquals(2, traj3.getNumberOfSegments());
-      assertEquals(1.0, traj3.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj3.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(1.0, traj3.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj3.getSegment(1).getEndTime(), epsilon);
 
       TrajectoryMathTools.setCurrentSegmentPolynomial(traj3.add(), traj1.getSegment(2), 2.25, 2.5, Epsilons.ONE_MILLIONTH);
 
       assertEquals(3, traj3.getNumberOfSegments());
-      assertEquals(2.250, traj3.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.5, traj3.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(2.250, traj3.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.5, traj3.getSegment(2).getEndTime(), epsilon);
    }
 
 
@@ -1346,12 +1345,12 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.removeShortSegments(traj, 0.11);
 
       assertEquals(3, traj.getNumberOfSegments());
-      assertEquals(0.0, traj.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.0, traj.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj.getSegment(2).getEndTime(), epsilon);
 
       traj.reset();
 
@@ -1363,12 +1362,12 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.removeShortSegments(traj, 0.11);
 
       assertEquals(3, traj.getNumberOfSegments());
-      assertEquals(0.0, traj.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.0, traj.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj.getSegment(2).getEndTime(), epsilon);
 
       traj.reset();
 
@@ -1380,12 +1379,12 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.removeShortSegments(traj, 0.11);
 
       assertEquals(3, traj.getNumberOfSegments());
-      assertEquals(0.0, traj.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(3.0, traj.getSegment(2).getFinalTime(), epsilon);
+      assertEquals(0.0, traj.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj.getSegment(2).getStartTime(), epsilon);
+      assertEquals(3.0, traj.getSegment(2).getEndTime(), epsilon);
 
 
 
@@ -1405,18 +1404,18 @@ public class TrajectoryMathToolsTest
       TrajectoryMathTools.removeShortSegments(traj, 0.11);
 
       assertEquals(6, traj.getNumberOfSegments());
-      assertEquals(0.0, traj.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.5, traj.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(0.5, traj.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.7, traj.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(0.7, traj.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(1.0, traj.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(1.9, traj.getSegment(3).getFinalTime(), epsilon);
-      assertEquals(1.9, traj.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(2.3, traj.getSegment(4).getFinalTime(), epsilon);
-      assertEquals(2.3, traj.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(3.0, traj.getSegment(5).getFinalTime(), epsilon);
+      assertEquals(0.0, traj.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.5, traj.getSegment(0).getEndTime(), epsilon);
+      assertEquals(0.5, traj.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.7, traj.getSegment(1).getEndTime(), epsilon);
+      assertEquals(0.7, traj.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(2).getEndTime(), epsilon);
+      assertEquals(1.0, traj.getSegment(3).getStartTime(), epsilon);
+      assertEquals(1.9, traj.getSegment(3).getEndTime(), epsilon);
+      assertEquals(1.9, traj.getSegment(4).getStartTime(), epsilon);
+      assertEquals(2.3, traj.getSegment(4).getEndTime(), epsilon);
+      assertEquals(2.3, traj.getSegment(5).getStartTime(), epsilon);
+      assertEquals(3.0, traj.getSegment(5).getEndTime(), epsilon);
 
    }
 
@@ -1439,23 +1438,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.stretchTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.0, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1473,23 +1472,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.stretchTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.0, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1507,23 +1506,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.stretchTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.0, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1541,23 +1540,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.stretchTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.0, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(3.0, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.0, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(3.0, traj2.getSegment(3).getEndTime(), epsilon);
    }
 
    @Test
@@ -1578,23 +1577,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.shrinkTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.1, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.1, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1612,23 +1611,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.shrinkTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.1, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.1, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1646,23 +1645,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.shrinkTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.1, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.1, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj2.getSegment(3).getEndTime(), epsilon);
 
 
       traj1.reset();
@@ -1680,23 +1679,23 @@ public class TrajectoryMathToolsTest
 
       TrajectoryMathTools.shrinkTrajectoriesToMatchBounds(traj1, traj2);
 
-      assertEquals(0.1, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj1.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj1.getSegment(3).getEndTime(), epsilon);
 
-      assertEquals(0.1, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(2.0, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.9, traj2.getSegment(3).getFinalTime(), epsilon);
+      assertEquals(0.1, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(2.0, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.9, traj2.getSegment(3).getEndTime(), epsilon);
    }
 
 
@@ -1740,21 +1739,21 @@ public class TrajectoryMathToolsTest
          EuclidCoreTestTools.assertTuple3DEquals("Failed at time " + time + ".", expectedPosition, actualPosition, epsilon);
       }
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.4, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.4, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.4, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.4, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(1).getEndTime(), epsilon);
 
-      assertEquals(0.0, traj2.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.0, traj2.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(1.4, traj2.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(1.4, traj2.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(1.6, traj2.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(1.6, traj2.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(3).getFinalTime(), epsilon);
-      assertEquals(2.1, traj2.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(3.0, traj2.getSegment(4).getFinalTime(), epsilon);
+      assertEquals(0.0, traj2.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.0, traj2.getSegment(1).getStartTime(), epsilon);
+      assertEquals(1.4, traj2.getSegment(1).getEndTime(), epsilon);
+      assertEquals(1.4, traj2.getSegment(2).getStartTime(), epsilon);
+      assertEquals(1.6, traj2.getSegment(2).getEndTime(), epsilon);
+      assertEquals(1.6, traj2.getSegment(3).getStartTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(3).getEndTime(), epsilon);
+      assertEquals(2.1, traj2.getSegment(4).getStartTime(), epsilon);
+      assertEquals(3.0, traj2.getSegment(4).getEndTime(), epsilon);
 
 
 
@@ -1794,10 +1793,10 @@ public class TrajectoryMathToolsTest
          EuclidCoreTestTools.assertTuple3DEquals("Failed at time " + time + ".", expectedVelocity, actualVelocity, epsilon);
       }
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.4, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.4, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.4, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.4, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(1).getEndTime(), epsilon);
 
 
 
@@ -1830,10 +1829,10 @@ public class TrajectoryMathToolsTest
       actualAcceleration = new FrameVector3D();
 
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.6, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.6, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.6, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.6, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(1).getEndTime(), epsilon);
 
       timesToTest = new double[]{0.0, 1.6, 3.0};
 
@@ -1875,10 +1874,10 @@ public class TrajectoryMathToolsTest
       actualAcceleration = new FrameVector3D();
 
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(1.5, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(1.5, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(3.0, traj1.getSegment(1).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(1.5, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(1.5, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(3.0, traj1.getSegment(1).getEndTime(), epsilon);
 
       timesToTest = new double[]{0.0, 1.5, 3.0};
 
@@ -1936,22 +1935,22 @@ public class TrajectoryMathToolsTest
       FrameVector3D actualVelocity = new FrameVector3D();
       FrameVector3D actualAcceleration = new FrameVector3D();
 
-      assertEquals(0.0, traj1.getSegment(0).getInitialTime(), epsilon);
-      assertEquals(0.26, traj1.getSegment(0).getFinalTime(), epsilon);
-      assertEquals(0.26, traj1.getSegment(1).getInitialTime(), epsilon);
-      assertEquals(0.52, traj1.getSegment(1).getFinalTime(), epsilon);
-      assertEquals(0.52, traj1.getSegment(2).getInitialTime(), epsilon);
-      assertEquals(0.75, traj1.getSegment(2).getFinalTime(), epsilon);
-      assertEquals(0.75, traj1.getSegment(3).getInitialTime(), epsilon);
-      assertEquals(1.01, traj1.getSegment(3).getFinalTime(), epsilon);
-      assertEquals(1.01, traj1.getSegment(4).getInitialTime(), epsilon);
-      assertEquals(1.26, traj1.getSegment(4).getFinalTime(), epsilon);
-      assertEquals(1.26, traj1.getSegment(5).getInitialTime(), epsilon);
-      assertEquals(1.48, traj1.getSegment(5).getFinalTime(), epsilon);
-      assertEquals(1.48, traj1.getSegment(6).getInitialTime(), epsilon);
-      assertEquals(1.75, traj1.getSegment(6).getFinalTime(), epsilon);
-      assertEquals(1.75, traj1.getSegment(7).getInitialTime(), epsilon);
-      assertEquals(2.0, traj1.getSegment(7).getFinalTime(), epsilon);
+      assertEquals(0.0, traj1.getSegment(0).getStartTime(), epsilon);
+      assertEquals(0.26, traj1.getSegment(0).getEndTime(), epsilon);
+      assertEquals(0.26, traj1.getSegment(1).getStartTime(), epsilon);
+      assertEquals(0.52, traj1.getSegment(1).getEndTime(), epsilon);
+      assertEquals(0.52, traj1.getSegment(2).getStartTime(), epsilon);
+      assertEquals(0.75, traj1.getSegment(2).getEndTime(), epsilon);
+      assertEquals(0.75, traj1.getSegment(3).getStartTime(), epsilon);
+      assertEquals(1.01, traj1.getSegment(3).getEndTime(), epsilon);
+      assertEquals(1.01, traj1.getSegment(4).getStartTime(), epsilon);
+      assertEquals(1.26, traj1.getSegment(4).getEndTime(), epsilon);
+      assertEquals(1.26, traj1.getSegment(5).getStartTime(), epsilon);
+      assertEquals(1.48, traj1.getSegment(5).getEndTime(), epsilon);
+      assertEquals(1.48, traj1.getSegment(6).getStartTime(), epsilon);
+      assertEquals(1.75, traj1.getSegment(6).getEndTime(), epsilon);
+      assertEquals(1.75, traj1.getSegment(7).getStartTime(), epsilon);
+      assertEquals(2.0, traj1.getSegment(7).getEndTime(), epsilon);
 
       double[] timesToTest = new double[]{0.0, 0.26, 0.52, 0.75, 1.01, 1.26, 1.48, 1.75, 2.0};
 

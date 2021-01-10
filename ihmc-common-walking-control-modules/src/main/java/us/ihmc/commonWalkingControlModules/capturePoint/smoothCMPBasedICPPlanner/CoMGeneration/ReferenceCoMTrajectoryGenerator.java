@@ -223,7 +223,7 @@ public class ReferenceCoMTrajectoryGenerator implements PositionTrajectoryGenera
       if (isInitialTransfer.getBooleanValue())
       {
          FrameTrajectory3D cmpPolynomial3D = cmpTrajectories.get(0);
-         cmpPolynomial3D.compute(cmpPolynomial3D.getInitialTime());
+         cmpPolynomial3D.compute(cmpPolynomial3D.getStartTime());
          comPositionDesiredInitialCurrentSegment.set(cmpPolynomial3D.getFramePosition());
          comVelocityDesiredInitialCurrentSegment.setToZero();
          comAccelerationDesiredInitialCurrentSegment.setToZero();
@@ -262,7 +262,7 @@ public class ReferenceCoMTrajectoryGenerator implements PositionTrajectoryGenera
          return 0;
       }
 
-      while (timeInCurrentPhase < trajectories.get(currentSegmentIndex).getInitialTime() - 1e-6 && currentSegmentIndex > 0)
+      while (timeInCurrentPhase < trajectories.get(currentSegmentIndex).getStartTime() - 1e-6 && currentSegmentIndex > 0)
       {
          currentSegmentIndex--;
       }

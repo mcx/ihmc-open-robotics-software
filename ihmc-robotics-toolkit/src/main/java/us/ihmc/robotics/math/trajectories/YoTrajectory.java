@@ -444,8 +444,8 @@ public class YoTrajectory
    public void set(Trajectory trajectory)
    {
       reshape(trajectory.getNumberOfCoefficients());
-      this.tInitial.set(trajectory.getInitialTime());
-      this.tFinal.set(trajectory.getFinalTime());
+      this.tInitial.set(trajectory.getStartTime());
+      this.tFinal.set(trajectory.getEndTime());
       for(int i = 0; i < getNumberOfCoefficients(); i++)
          polynomial.setDirectly(i, trajectory.getCoefficient(i));
    }

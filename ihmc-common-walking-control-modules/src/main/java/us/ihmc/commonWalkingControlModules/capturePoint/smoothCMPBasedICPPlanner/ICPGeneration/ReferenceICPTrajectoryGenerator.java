@@ -414,7 +414,7 @@ public class ReferenceICPTrajectoryGenerator implements PositionTrajectoryGenera
       if (isInitialTransfer.getBooleanValue())
       {
          FrameTrajectory3D cmpPolynomial3D = cmpTrajectories.get(0);
-         cmpPolynomial3D.compute(cmpPolynomial3D.getInitialTime());
+         cmpPolynomial3D.compute(cmpPolynomial3D.getStartTime());
       }
 
       icpToolbox.computeDesiredCornerPoints(icpDesiredInitialPositions, icpDesiredFinalPositions, cmpTrajectories, omega0.getDoubleValue());
@@ -434,8 +434,8 @@ public class ReferenceICPTrajectoryGenerator implements PositionTrajectoryGenera
          for (int i = 0; i < totalNumberOfCMPSegments.getIntegerValue(); i++)
          {
             icpSegmentDurations.get(i).set(cmpTrajectories.get(i).getDuration());
-            icpSegmentStartTimes.get(i).set(cmpTrajectories.get(i).getInitialTime());
-            icpSegmentEndTimes.get(i).set(cmpTrajectories.get(i).getFinalTime());
+            icpSegmentStartTimes.get(i).set(cmpTrajectories.get(i).getStartTime());
+            icpSegmentEndTimes.get(i).set(cmpTrajectories.get(i).getEndTime());
          }
 
          endOfSegmentICPPosition.setToNaN();
@@ -525,7 +525,7 @@ public class ReferenceICPTrajectoryGenerator implements PositionTrajectoryGenera
          return 0;
       }
 
-      while (timeInCurrentPhase < trajectories.get(currentSegmentIndex).getInitialTime() - 1e-6 && currentSegmentIndex > 0)
+      while (timeInCurrentPhase < trajectories.get(currentSegmentIndex).getStartTime() - 1e-6 && currentSegmentIndex > 0)
       {
          currentSegmentIndex--;
       }

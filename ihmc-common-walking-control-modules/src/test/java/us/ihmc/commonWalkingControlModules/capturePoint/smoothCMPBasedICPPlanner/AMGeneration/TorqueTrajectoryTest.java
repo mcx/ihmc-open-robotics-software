@@ -3,19 +3,13 @@ package us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanne
 import static us.ihmc.robotics.Assert.*;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import us.ihmc.commons.Epsilons;
 import us.ihmc.commons.RandomNumbers;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Disabled;
 import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
-import us.ihmc.commons.MathTools;
 import us.ihmc.robotics.math.trajectories.FrameTrajectory3D;
-import us.ihmc.robotics.math.trajectories.Trajectory;
 import us.ihmc.robotics.math.trajectories.TrajectoryMathTools;
 
 import java.util.Random;
@@ -56,8 +50,8 @@ public class TorqueTrajectoryTest
          {
             TrajectoryMathTools.getDerivative(calculatedTrajectory.getTrajectoryX(), angularMomentumTrajectory.getSegment(i).getTrajectoryY());
             TrajectoryMathTools.getDerivative(calculatedTrajectory.getTrajectoryY(), angularMomentumTrajectory.getSegment(i).getTrajectoryX());
-            calculatedTrajectory.getTrajectoryZ().setConstant(angularMomentumTrajectory.getSegment(i).getInitialTime(Axis3D.X),
-                                                              angularMomentumTrajectory.getSegment(i).getFinalTime(Axis3D.X), 0.0);
+            calculatedTrajectory.getTrajectoryZ().setConstant(angularMomentumTrajectory.getSegment(i).getStartTime(Axis3D.X),
+                                                              angularMomentumTrajectory.getSegment(i).getEndTime(Axis3D.X), 0.0);
             TrajectoryMathTools.scale(calculatedTrajectory.getTrajectoryY(), -1.0);
             TrajectoryMathTools.scale(1.0 / verticalScalar, calculatedTrajectory);
 
@@ -91,8 +85,8 @@ public class TorqueTrajectoryTest
       {
          TrajectoryMathTools.getDerivative(calculatedTrajectory.getTrajectoryX(), angularMomentumTrajectory.getSegment(i).getTrajectoryY());
          TrajectoryMathTools.getDerivative(calculatedTrajectory.getTrajectoryY(), angularMomentumTrajectory.getSegment(i).getTrajectoryX());
-         calculatedTrajectory.getTrajectoryZ().setConstant(angularMomentumTrajectory.getSegment(i).getInitialTime(Axis3D.X),
-                                                           angularMomentumTrajectory.getSegment(i).getFinalTime(Axis3D.X), 0.0);
+         calculatedTrajectory.getTrajectoryZ().setConstant(angularMomentumTrajectory.getSegment(i).getStartTime(Axis3D.X),
+                                                           angularMomentumTrajectory.getSegment(i).getEndTime(Axis3D.X), 0.0);
          TrajectoryMathTools.scale(calculatedTrajectory.getTrajectoryY(), -1.0);
          TrajectoryMathTools.scale(1.0 / verticalScalar, calculatedTrajectory);
 
@@ -116,8 +110,8 @@ public class TorqueTrajectoryTest
 
          double startTime = RandomNumbers.nextDouble(random, 10.0);
          double duration = RandomNumbers.nextDouble(random, 0.0, 100.0);
-         randomTrajectory.setInitialTime(startTime);
-         randomTrajectory.setFinalTime(startTime + duration);
+         randomTrajectory.setStartTime(startTime);
+         randomTrajectory.setEndTime(startTime + duration);
       }
 
       return trajectoryToSet;

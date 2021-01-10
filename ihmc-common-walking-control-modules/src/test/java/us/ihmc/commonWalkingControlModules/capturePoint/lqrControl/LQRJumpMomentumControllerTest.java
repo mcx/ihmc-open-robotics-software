@@ -275,7 +275,7 @@ public class LQRJumpMomentumControllerTest
       Trajectory3D initialVRPTrajectory = new Trajectory3D(4);
       relativeVRPTrajectory.set(coMTrajectoryPlanner.getVRPTrajectories().get(2));
       initialVRPTrajectory.set(coMTrajectoryPlanner.getVRPTrajectories().get(0));
-      relativeVRPTrajectory.compute(relativeVRPTrajectory.getFinalTime());
+      relativeVRPTrajectory.compute(relativeVRPTrajectory.getEndTime());
       Point3DReadOnly finalPosition = relativeVRPTrajectory.getPosition();
       relativeVRPTrajectory.offsetTrajectoryPosition(-finalPosition.getX(), -finalPosition.getY(), -finalPosition.getZ());
       initialVRPTrajectory.offsetTrajectoryPosition(-finalPosition.getX(), -finalPosition.getY(), -finalPosition.getZ());

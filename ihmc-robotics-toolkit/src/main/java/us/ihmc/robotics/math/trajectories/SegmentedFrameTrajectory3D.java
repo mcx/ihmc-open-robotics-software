@@ -7,9 +7,6 @@ import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.commons.lists.RecyclingArrayList;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -67,7 +64,7 @@ public class SegmentedFrameTrajectory3D implements SegmentedFrameTrajectory3DInt
    public void update(double timeInState)
    {
       setCurrentSegmentIndexFromStateTime(timeInState);
-      timeInState = Math.min(timeInState, currentSegment.getFinalTime());
+      timeInState = Math.min(timeInState, currentSegment.getEndTime());
       currentSegment.compute(timeInState);
    }
 
@@ -95,14 +92,14 @@ public class SegmentedFrameTrajectory3D implements SegmentedFrameTrajectory3DInt
       if (getNumberOfSegments() == 0) // standing
          return;
 
-      if (MathTools.isGreaterThanOrEqualToWithPrecision(timeInState, segments.get(0).getInitialTime(), Epsilons.ONE_TEN_THOUSANDTH))
+      if (MathTools.isGreaterThanOrEqualToWithPrecision(timeInState, segments.get(0).getStartTime(), Epsilons.ONE_TEN_THOUSANDTH))
       {
          for (; segmentIndex < getNumberOfSegments() - 1; segmentIndex++)
             if (segments.get(segmentIndex).timeIntervalContains(timeInState, Epsilons.ONE_TEN_THOUSANDTH))
                break;
       }
       else
-         throw new RuntimeException("Unable to find suitable segment at time " + timeInState + ", InitialTime: " + segments.get(0).getInitialTime());
+         throw new RuntimeException("Unable to find suitable segment at time " + timeInState + ", InitialTime: " + segments.get(0).getStartTime());
       currentSegment = segments.get(segmentIndex);
       currentSegmentIndex = segmentIndex;
    }
@@ -151,12 +148,12 @@ public class SegmentedFrameTrajectory3D implements SegmentedFrameTrajectory3DInt
 
    public double getInitialTime()
    {
-      return segments.getFirst().getInitialTime();
+      return segments.getFirst().getStartTime();
    }
 
    public double getFinalTime()
    {
-      return segments.getLast().getFinalTime();
+      return segments.getLast().getEndTime();
    }
 
    public FrameTrajectory3D add()
@@ -186,10 +183,10 @@ public class SegmentedFrameTrajectory3D implements SegmentedFrameTrajectory3DInt
 
    public double[] getNodeTimes()
    {
-      nodeTime[0] = segments.get(0).getInitialTime();
+      nodeTime[0] = segments.get(0).getStartTime();
       int i;
       for (i = 0; i < getNumberOfSegments(); i++)
-         nodeTime[i + 1] = segments.get(i).getFinalTime();
+         nodeTime[i + 1] = segments.get(i).getEndTime();
       for (; i < maxNumberOfSegments; i++)
          nodeTime[i + 1] = Double.NaN;
       return nodeTime;
@@ -244,9 +241,9 @@ public class SegmentedFrameTrajectory3D implements SegmentedFrameTrajectory3DInt
       {
          ret += "\nSegment " + i + ":\n"; 
          segments.get(i).getStartPoint(tempFramePointForPrinting);
-         ret += "Start Point: t = " + segments.get(i).getInitialTime() + ", " + tempFramePointForPrinting.toString();
+         ret += "Start Point: t = " + segments.get(i).getStartTime() + ", " + tempFramePointForPrinting.toString();
          segments.get(i).getEndPoint(tempFramePointForPrinting);
-         ret += "End Point: t = " + segments.get(i).getFinalTime() + ", " + tempFramePointForPrinting.toString();
+         ret += "End Point: t = " + segments.get(i).getEndTime() + ", " + tempFramePointForPrinting.toString();
       }
       return ret;
    }

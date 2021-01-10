@@ -87,15 +87,15 @@ public class SmoothCapturePointToolboxTest
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i), cmpPolynomial3D.getPosition(), EPSILON);
             cmpPolynomial3D.compute(tFinal);
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i+1), cmpPolynomial3D.getPosition(), EPSILON);
-            assertEquals(t0, cmpPolynomial3D.getInitialTime(), EPSILON);
-            assertEquals(tFinal, cmpPolynomial3D.getFinalTime(), EPSILON);
+            assertEquals(t0, cmpPolynomial3D.getStartTime(), EPSILON);
+            assertEquals(tFinal, cmpPolynomial3D.getEndTime(), EPSILON);
             cmpPolynomials3D.set(i, cmpPolynomial3D);
             cmpPolynomials3D.get(i).compute(t0);
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i), cmpPolynomials3D.get(i).getPosition(), EPSILON);
             cmpPolynomials3D.get(i).compute(tFinal);
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i+1), cmpPolynomials3D.get(i).getPosition(), EPSILON);
-            assertEquals(t0, cmpPolynomials3D.get(i).getInitialTime(), EPSILON);
-            assertEquals(tFinal, cmpPolynomials3D.get(i).getFinalTime(), EPSILON);
+            assertEquals(t0, cmpPolynomials3D.get(i).getStartTime(), EPSILON);
+            assertEquals(tFinal, cmpPolynomials3D.get(i).getEndTime(), EPSILON);
          }
          icpToolbox.computeDesiredCornerPoints3D(entryCornerPointsToPack, exitCornerPointsToPack, cmpPolynomials3D, omega0);
          icpToolbox.computeDesiredCornerPoints(entryCornerPointsToPackDecoupled, exitCornerPointsToPackDecoupled, cmpPolynomials3D, omega0);
@@ -121,8 +121,8 @@ public class SmoothCapturePointToolboxTest
          for (int i = 0; i < numberOfCoPWaypoints-1; i++)
          {
             cmpPolynomials3D.get(i).compute(t0);
-            assertEquals(t0, cmpPolynomials3D.get(i).getInitialTime(), EPSILON);
-            assertEquals(tFinal, cmpPolynomials3D.get(i).getFinalTime(), EPSILON);
+            assertEquals(t0, cmpPolynomials3D.get(i).getStartTime(), EPSILON);
+            assertEquals(tFinal, cmpPolynomials3D.get(i).getEndTime(), EPSILON);
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i), cmpPolynomials3D.get(i).getPosition(), EPSILON);
             cmpPolynomials3D.get(i).compute(tFinal);
             EuclidCoreTestTools.assertTuple3DEquals(copsToPack.get(i+1), cmpPolynomials3D.get(i).getPosition(), EPSILON);
@@ -395,13 +395,13 @@ public class SmoothCapturePointToolboxTest
    
    public static void calculateICPPositionByHand3DLinear(double omega0, double time, FrameTrajectory3D linear3D, FramePoint3D icpPositionDesiredFinal, FramePoint3D icpPositionDesiredCurrent)
    {      
-      linear3D.compute(linear3D.getInitialTime());
+      linear3D.compute(linear3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(linear3D.getFramePosition());
       
-      linear3D.compute(linear3D.getFinalTime());
+      linear3D.compute(linear3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(linear3D.getFramePosition());
       
-      double timeFinal = linear3D.getFinalTime();
+      double timeFinal = linear3D.getEndTime();
       
       double sigmat = calculateSigmaLinear(time, timeFinal, omega0);
       double sigmaT = calculateSigmaLinear(timeFinal, timeFinal, omega0);
@@ -418,13 +418,13 @@ public class SmoothCapturePointToolboxTest
    
    public static void calculateICPPositionByHand3DCubic(double omega0, double time, FrameTrajectory3D cubic3D, FramePoint3D icpPositionDesiredFinal, FramePoint3D icpPositionDesiredCurrent)
    {      
-      cubic3D.compute(cubic3D.getInitialTime());
+      cubic3D.compute(cubic3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(cubic3D.getFramePosition());
       
-      cubic3D.compute(cubic3D.getFinalTime());
+      cubic3D.compute(cubic3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(cubic3D.getFramePosition());
       
-      double timeFinal = cubic3D.getFinalTime();
+      double timeFinal = cubic3D.getEndTime();
       
       double sigmat = calculateSigmaCubic(time, timeFinal, omega0);
       double sigmaT = calculateSigmaCubic(timeFinal, timeFinal, omega0);
@@ -441,13 +441,13 @@ public class SmoothCapturePointToolboxTest
    
    public static void calculateICPVelocityByHand3DLinear(double omega0, double time, FrameTrajectory3D linear3D, FramePoint3D icpPositionDesiredFinal, FrameVector3D icpVelocityDesiredCurrent)
    {      
-      linear3D.compute(linear3D.getInitialTime());
+      linear3D.compute(linear3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(linear3D.getFramePosition());
       
-      linear3D.compute(linear3D.getFinalTime());
+      linear3D.compute(linear3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(linear3D.getFramePosition());
       
-      double timeFinal = linear3D.getFinalTime();
+      double timeFinal = linear3D.getEndTime();
       
       double dSigmat = calculateSigmaDotLinear(time, timeFinal, omega0);
       double sigmaT = calculateSigmaLinear(timeFinal, timeFinal, omega0);
@@ -464,13 +464,13 @@ public class SmoothCapturePointToolboxTest
    
    public static void calculateICPVelocityByHand3DCubic(double omega0, double time, FrameTrajectory3D cubic3D, FramePoint3D icpPositionDesiredFinal, FrameVector3D icpVelocityDesiredCurrent)
    {      
-      cubic3D.compute(cubic3D.getInitialTime());
+      cubic3D.compute(cubic3D.getStartTime());
       FramePoint3D cmpRefInit = new FramePoint3D(cubic3D.getFramePosition());
       
-      cubic3D.compute(cubic3D.getFinalTime());
+      cubic3D.compute(cubic3D.getEndTime());
       FramePoint3D cmpRefFinal = new FramePoint3D(cubic3D.getFramePosition());
       
-      double timeFinal = cubic3D.getFinalTime();
+      double timeFinal = cubic3D.getEndTime();
       
       double dSigmat = calculateSigmaDotCubic(time, timeFinal, omega0);
       double sigmaT = calculateSigmaCubic(timeFinal, timeFinal, omega0);

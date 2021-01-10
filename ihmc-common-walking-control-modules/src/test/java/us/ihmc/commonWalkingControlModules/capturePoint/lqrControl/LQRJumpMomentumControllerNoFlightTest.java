@@ -7,15 +7,8 @@ import org.ejml.dense.row.factory.LinearSolverFactory_DDRM;
 import org.ejml.interfaces.linsol.LinearSolverDense;
 import org.junit.jupiter.api.Test;
 import us.ihmc.commonWalkingControlModules.dynamicPlanning.comPlanning.ContactState;
-import us.ihmc.commonWalkingControlModules.dynamicPlanning.comPlanning.ContactStateProvider;
 import us.ihmc.commonWalkingControlModules.dynamicPlanning.comPlanning.SettableContactStateProvider;
-import us.ihmc.commonWalkingControlModules.dynamicPlanning.comPlanning.SimpleCoMTrajectoryPlanner;
 import us.ihmc.commons.MathTools;
-import us.ihmc.euclid.referenceFrame.FramePoint2D;
-import us.ihmc.euclid.referenceFrame.FramePoint3D;
-import us.ihmc.euclid.referenceFrame.FrameVector3D;
-import us.ihmc.euclid.referenceFrame.ReferenceFrame;
-import us.ihmc.euclid.tools.EuclidCoreTestTools;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.matrixlib.MatrixTestTools;
 import us.ihmc.matrixlib.NativeCommonOps;
@@ -660,7 +653,7 @@ public class LQRJumpMomentumControllerNoFlightTest
 
       List<Trajectory3D> relativeVRPTrajectories = new ArrayList<>();
       Trajectory3D lastTrajectory = trajectories.get(trajectories.size() - 1);
-      lastTrajectory.compute(lastTrajectory.getFinalTime());
+      lastTrajectory.compute(lastTrajectory.getEndTime());
       DMatrixRMaj finalVRPState = new DMatrixRMaj(3, 1);
       lastTrajectory.getPosition().get(finalVRPState);
 

@@ -1062,8 +1062,8 @@ public class SmoothCMPBasedICPPlannerTest
          {
             Trajectory3D segment1 = cmpTrajectory1.getSegment(j);
             Trajectory3D segment2 = cmpTrajectory2.getSegment(j);
-            Assert.assertEquals(segment1.getInitialTime(), segment2.getInitialTime(), epsilon);
-            Assert.assertEquals(segment1.getFinalTime(), segment2.getFinalTime(), epsilon);
+            Assert.assertEquals(segment1.getStartTime(), segment2.getStartTime(), epsilon);
+            Assert.assertEquals(segment1.getEndTime(), segment2.getEndTime(), epsilon);
 
             for (int k = 0; k < 3; k++)
             {

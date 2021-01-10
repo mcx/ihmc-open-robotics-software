@@ -23,7 +23,7 @@ import us.ihmc.yoVariables.registry.YoRegistry;
  *
  * @author Sylvain Bertrand
  */
-public class YoPolynomial3D implements Polynomial3DVariableHolder
+public class YoPolynomial3D implements Polynomial3DVariableHolder, Trajectory3DReadOnly
 {
    protected final YoPolynomial xPolynomial;
    protected final YoPolynomial yPolynomial;

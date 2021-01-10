@@ -528,10 +528,10 @@ public class FootstepAngularMomentumPredictor implements AngularMomentumTrajecto
 
    private void setFootTrajectoriesForSegment(double initialTime, double finalTime)
    {
-      segmentSwingFootPositionTrajectory.setTime(initialTime, finalTime);
+      segmentSwingFootPositionTrajectory.setInterval(initialTime, finalTime);
       TrajectoryMathTools.getDerivative(segmentSwingFootVelocityTrajectory, segmentSwingFootPositionTrajectory);
 
-      segmentSupportFootPositionTrajectory.setTime(initialTime, finalTime);
+      segmentSupportFootPositionTrajectory.setInterval(initialTime, finalTime);
       TrajectoryMathTools.getDerivative(segmentSupportFootVelocityTrajectory, segmentSupportFootPositionTrajectory);
    }
 
@@ -600,8 +600,8 @@ public class FootstepAngularMomentumPredictor implements AngularMomentumTrajecto
       }
       else
       {
-         double t0 = segmentSwingFootPositionTrajectory.getInitialTime();
-         double tf = segmentSwingFootPositionTrajectory.getFinalTime();
+         double t0 = segmentSwingFootPositionTrajectory.getStartTime();
+         double tf = segmentSwingFootPositionTrajectory.getEndTime();
          estimatedAngularMomentumTrajectoryToPack.setConstant(t0, tf, zeroPoint);
       }
    }

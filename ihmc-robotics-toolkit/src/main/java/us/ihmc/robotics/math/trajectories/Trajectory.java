@@ -7,12 +7,13 @@ import org.ejml.interfaces.linsol.LinearSolverDense;
 
 import us.ihmc.commons.Epsilons;
 import us.ihmc.commons.MathTools;
+import us.ihmc.robotics.time.TimeIntervalBasics;
 
 /**
  * Simple trajectory class. Does not use the {@code Polynomial} class since its weird
  * Coefficients are stored with lowest order at the lowest index (what else would you do?)
  */
-public class Trajectory
+public class Trajectory implements TimeIntervalBasics
 {
    private final int maximumNumberOfCoefficients;
    private final double[] coefficients;
@@ -716,16 +717,16 @@ public class Trajectory
 
    public void setTime(double t0, double tFinal)
    {
-      setInitialTime(t0);
-      setFinalTime(tFinal);
+      setStartTime(t0);
+      setEndTime(tFinal);
    }
 
-   public void setFinalTime(double tFinal)
+   public void setEndTime(double tFinal)
    {
       this.tFinal = tFinal;
    }
 
-   public void setInitialTime(double t0)
+   public void setStartTime(double t0)
    {
       this.tInitial = t0;
    }
@@ -777,12 +778,12 @@ public class Trajectory
    }
 
 
-   public double getFinalTime()
+   public double getEndTime()
    {
       return this.tFinal;
    }
 
-   public double getInitialTime()
+   public double getStartTime()
    {
       return this.tInitial;
    }
@@ -794,12 +795,12 @@ public class Trajectory
 
    public boolean timeIntervalContains(double timeToCheck, double EPSILON)
    {
-      return MathTools.intervalContains(timeToCheck, getInitialTime(), getFinalTime(), EPSILON);
+      return MathTools.intervalContains(timeToCheck, getStartTime(), getEndTime(), EPSILON);
    }
 
    public boolean timeIntervalContains(double timeToCheck)
    {
-      return MathTools.intervalContains(timeToCheck, getInitialTime(), getFinalTime(), Epsilons.ONE_MILLIONTH);
+      return MathTools.intervalContains(timeToCheck, getStartTime(), getEndTime(), Epsilons.ONE_MILLIONTH);
    }
 
    /**
@@ -945,7 +946,7 @@ public class Trajectory
 
    public boolean isValidTrajectory()
    {
-      boolean retVal = (getInitialTime() < getFinalTime()) && Double.isFinite(getInitialTime()) && Double.isFinite(getFinalTime());
+      boolean retVal = (getStartTime() < getEndTime()) && Double.isFinite(getStartTime()) && Double.isFinite(getEndTime());
       for (int i = 0; retVal && i < numberOfCoefficients; i++)
          retVal &= Double.isFinite(coefficients[i]);
       return retVal;
