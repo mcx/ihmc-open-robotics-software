@@ -788,11 +788,6 @@ public class Trajectory implements TimeIntervalBasics
       return this.tInitial;
    }
 
-   public double getDuration()
-   {
-      return tFinal - tInitial;
-   }
-
    public boolean timeIntervalContains(double timeToCheck, double EPSILON)
    {
       return MathTools.intervalContains(timeToCheck, getStartTime(), getEndTime(), EPSILON);
