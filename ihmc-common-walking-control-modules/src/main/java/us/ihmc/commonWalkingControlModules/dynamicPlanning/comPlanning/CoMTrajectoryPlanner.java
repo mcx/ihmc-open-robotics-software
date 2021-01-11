@@ -90,7 +90,7 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
    private final double gravityZ;
 
    private final CoMTrajectoryPlannerIndexHandler indexHandler = new CoMTrajectoryPlannerIndexHandler();
-   private final LinearCoMTrajectoryHandler trajectoryHandler = new LinearCoMTrajectoryHandler(indexHandler);
+   private final LinearCoMTrajectoryHandler trajectoryHandler = new LinearCoMTrajectoryHandler();
 
    private final FixedFramePoint3DBasics desiredCoMPosition = new FramePoint3D(worldFrame);
    private final FixedFrameVector3DBasics desiredCoMVelocity = new FrameVector3D(worldFrame);
@@ -216,7 +216,7 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
                                                     true);
 
       solveForCoefficientConstraintMatrix(contactSequence);
-      trajectoryHandler.setCoefficientsFromSolution(xCoefficientVector, yCoefficientVector, zCoefficientVector);
+      trajectoryHandler.setCoefficientsFromSolution(contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
 
       if (maintainInitialCoMVelocityContinuity.getBooleanValue() && comContinuityCalculator != null)
       {
@@ -244,7 +244,7 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
          }
       }
 
-      trajectoryHandler.setCoefficientsFromSolution(xCoefficientVector, yCoefficientVector, zCoefficientVector);
+      trajectoryHandler.setCoefficientsFromSolution(contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
 
       updateCornerPoints(contactSequence);
 
@@ -396,8 +396,8 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       if (segmentId < 0)
          throw new IllegalArgumentException("time is invalid.");
 
-      trajectoryHandler.setActiveCoefficientsForSegment(segmentId);
-      trajectoryHandler.compute(omega.getValue(),
+      trajectoryHandler.compute(segmentId,
+                                omega.getValue(),
                                 timeInPhase,
                                 comPositionToPack,
                                 comVelocityToPack,
