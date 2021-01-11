@@ -683,8 +683,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       numberOfConstraints++;
    }
 
-   private final FrameVector3D desiredVelocity = new FrameVector3D();
-
    /**
     * Used to enforce the dynamics at the beginning of the trajectory segment {@param sequenceId}.
     *
@@ -697,11 +695,8 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       ContactState contactState = contactStateProvider.getContactState();
       if (contactState.isLoadBearing())
       {
-         double duration = contactStateProvider.getTimeInterval().getDuration();
-         desiredVelocity.sub(endVRPPositions.get(sequenceId), startVRPPositions.get(sequenceId));
-         desiredVelocity.scale(1.0 / duration);
          constrainVRPPosition(sequenceId, indexHandler.getVRPWaypointStartPositionIndex(sequenceId), 0.0, startVRPPositions.get(sequenceId));
-         constrainVRPVelocity(sequenceId, indexHandler.getVRPWaypointStartVelocityIndex(sequenceId), 0.0, desiredVelocity);
+         constrainVRPVelocity(sequenceId, indexHandler.getVRPWaypointStartVelocityIndex(sequenceId), 0.0, contactSequence.get(sequenceId).getCopStartVelocity());
       }
       else
       {
@@ -723,10 +718,8 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       double duration = contactStateProvider.getTimeInterval().getDuration();
       if (contactState.isLoadBearing())
       {
-         desiredVelocity.sub(endVRPPositions.get(sequenceId), startVRPPositions.get(sequenceId));
-         desiredVelocity.scale(1.0 / duration);
          constrainVRPPosition(sequenceId, indexHandler.getVRPWaypointFinalPositionIndex(sequenceId), duration, endVRPPositions.get(sequenceId));
-         constrainVRPVelocity(sequenceId, indexHandler.getVRPWaypointFinalVelocityIndex(sequenceId), duration, desiredVelocity);
+         constrainVRPVelocity(sequenceId, indexHandler.getVRPWaypointFinalVelocityIndex(sequenceId), duration, contactSequence.get(sequenceId).getCopEndVelocity());
       }
       else
       {
