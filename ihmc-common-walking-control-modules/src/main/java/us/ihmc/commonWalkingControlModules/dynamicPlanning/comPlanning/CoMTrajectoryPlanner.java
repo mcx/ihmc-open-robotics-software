@@ -1,10 +1,7 @@
 package us.ihmc.commonWalkingControlModules.dynamicPlanning.comPlanning;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.ejml.data.*;
-
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.data.DMatrixSparseCSC;
 import org.ejml.dense.row.CommonOps_DDRM;
 import org.ejml.interfaces.linsol.LinearSolverSparse;
 import org.ejml.sparse.FillReducing;
@@ -16,18 +13,24 @@ import us.ihmc.euclid.geometry.LineSegment3D;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
-import us.ihmc.euclid.referenceFrame.interfaces.*;
+import us.ihmc.euclid.referenceFrame.interfaces.FixedFramePoint3DBasics;
+import us.ihmc.euclid.referenceFrame.interfaces.FixedFrameVector3DBasics;
+import us.ihmc.euclid.referenceFrame.interfaces.FramePoint3DReadOnly;
+import us.ihmc.euclid.referenceFrame.interfaces.FrameVector3DReadOnly;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.BagOfBalls;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.log.LogTools;
 import us.ihmc.robotics.math.trajectories.Trajectory3D;
+import us.ihmc.robotics.math.trajectories.Trajectory3DReadOnly;
 import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
 import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
 import us.ihmc.yoVariables.providers.DoubleProvider;
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
+
+import java.util.List;
 
 /**
  * <p>
@@ -116,7 +119,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
 
    private final RecyclingArrayList<Trajectory3D> vrpTrajectoryPool = new RecyclingArrayList<>(() -> new Trajectory3D(4));
    private final RecyclingArrayList<LineSegment3D> vrpSegments = new RecyclingArrayList<>(LineSegment3D::new);
-   private final List<Trajectory3D> vrpTrajectories = new ArrayList<>();
 
    private int numberOfConstraints = 0;
    private final YoBoolean maintainInitialCoMVelocityContinuity = new YoBoolean("maintainInitialComVelocityContinuity", registry);
@@ -175,6 +177,21 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       this.comContinuityCalculator = comContinuityCalculator;
    }
 
+   private final FramePoint3D tempPosition = new FramePoint3D();
+
+   public void reset()
+   {
+      trajectoryHandler.clearTrajectory();
+   }
+
+   public void initializeForStep(FramePoint3DReadOnly stepPosition, double stepDuration)
+   {
+      tempPosition.set(stepPosition);
+      tempPosition.addZ(getNominalCoMHeight());
+
+      trajectoryHandler.setLinear(currentCoMPosition, tempPosition, omega.getValue(), stepDuration);
+   }
+
    /**
     * {@inheritDoc}
     */
@@ -216,7 +233,7 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
                                                     true);
 
       solveForCoefficientConstraintMatrix(contactSequence);
-      trajectoryHandler.setCoefficientsFromSolution(contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
+      trajectoryHandler.setCoefficientsFromSolution(omega.getValue(), contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
 
       if (maintainInitialCoMVelocityContinuity.getBooleanValue() && comContinuityCalculator != null)
       {
@@ -244,7 +261,7 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
          }
       }
 
-      trajectoryHandler.setCoefficientsFromSolution(contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
+      trajectoryHandler.setCoefficientsFromSolution(omega.getValue(), contactSequence, xCoefficientVector, yCoefficientVector, zCoefficientVector);
 
       updateCornerPoints(contactSequence);
 
@@ -291,7 +308,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
 
       sparseSolver.setA(coefficientMultipliersSparse);
 
-      // TODO make an add equals method. Also don't pass in null, as that apparently makes garbage.
       CommonOps_DSCC.mult(vrpWaypointJacobian, vrpXWaypoints, xEquivalents);
       CommonOps_DDRM.addEquals(xEquivalents, xConstants);
 
@@ -319,7 +335,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
    private void updateCornerPoints(List<? extends ContactStateProvider> contactSequence)
    {
       vrpTrajectoryPool.clear();
-      vrpTrajectories.clear();
 
       comCornerPoints.clear();
       dcmCornerPoints.clear();
@@ -349,10 +364,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
                  dcmVelocityToThrowAway,
                  vrpEndPosition,
                  ecmpPositionToThrowAway);
-
-         Trajectory3D trajectory3D = vrpTrajectoryPool.add();
-         trajectory3D.setLinear(0.0, duration, vrpStartPosition, vrpEndPosition);
-         vrpTrajectories.add(trajectory3D);
 
          vrpSegments.add().set(vrpStartPosition, vrpEndPosition);
       }
@@ -397,7 +408,6 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
          throw new IllegalArgumentException("time is invalid.");
 
       trajectoryHandler.compute(segmentId,
-                                omega.getValue(),
                                 timeInPhase,
                                 comPositionToPack,
                                 comVelocityToPack,
@@ -832,9 +842,26 @@ public class CoMTrajectoryPlanner implements CoMTrajectoryProvider
       numberOfConstraints++;
    }
 
+   public boolean hasTrajectories()
+   {
+      return trajectoryHandler.hasTrajectory();
+   }
+
    @Override
    public List<Trajectory3D> getVRPTrajectories()
    {
-      return vrpTrajectories;
+      if (!hasTrajectories())
+         throw new RuntimeException("VRP Trajectories are not calculated");
+
+      return trajectoryHandler.getVrpTrajectories();
+   }
+
+   @Override
+   public List<? extends Trajectory3DReadOnly> getCoMTrajectories()
+   {
+      if (!hasTrajectories())
+         throw new RuntimeException("CoM Trajectories are not calculated");
+
+      return trajectoryHandler.getComTrajectories();
    }
 }
